@@ -1,0 +1,65 @@
+import { Request, Response } from "express";
+import * as bookService from "../services/bookService";
+
+export const createBook = async (req: Request, res: Response) => {
+  try {
+    const bookData = req.body;
+    const newBook = await bookService.createBook(bookData);
+    res.status(201).json(newBook);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating book" });
+  }
+};
+
+export const deleteBook = async (req: Request, res: Response) => {
+  try {
+    const bookId = req.params.id; // Assuming book ID is passed in the URL
+    const deletedBook = await bookService.deleteBook(bookId);
+    if (deletedBook) {
+      res.status(200).json({ message: "Book deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting book" });
+  }
+};
+
+export const getBook = async (req: Request, res: Response) => {
+  try {
+    const bookId = req.params.id; // Assuming book ID is passed in the URL
+    const book = await bookService.getBook(bookId);
+    if (book) {
+      res.status(200).json(book);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching book" });
+  }
+};
+
+export const getBooks = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id; // Assuming user ID is passed in the URL
+    const books = await bookService.getBooks(userId);
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching books" });
+  }
+};
+
+export const updateBook = async (req: Request, res: Response) => {
+  try {
+    const bookId = req.params.id; // Assuming book ID is passed in the URL
+    const bookData = req.body;
+    const updatedBook = await bookService.updateBook(bookId, bookData);
+    if (updatedBook) {
+      res.status(200).json(updatedBook);
+    } else {
+      res.status(404).json({ message: "Book not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating book" });
+  }
+};
