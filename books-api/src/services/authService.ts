@@ -25,7 +25,28 @@ export const getUserProfile = async (userId: string): Promise<IUser | null> => {
   }
 }
 
-export const registerUser = async (userData: IUser): Promise<IUser> => {
+export const signInUser = async (email: string, password: string): Promise<IUser | null> => {
+    try{
+        const existingUser = await User.findOne({email: email});
+
+        if(!existingUser){
+            throw new Error("Incorrect email address or password.");
+        }
+
+        // Compare the provided password with the stored hashed password
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+        if(!isMatch){
+            throw new Error("Incorrect email address or password.");
+        }
+
+        return existingUser;
+
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
+
+export const signUpUser = async (userData: IUser): Promise<IUser> => {
   try {
     // Validate email format
     if (!validator.isEmail(userData.email)) {
@@ -55,24 +76,3 @@ export const registerUser = async (userData: IUser): Promise<IUser> => {
     throw new Error(error.message);
   }
 };
-
-export const signInUser = async (email: string, password: string): Promise<IUser | null> => {
-    try{
-        const existingUser = await User.findOne({email: email});
-
-        if(!existingUser){
-            throw new Error("Incorrect email address or password.");
-        }
-
-        // Compare the provided password with the stored hashed password
-        const isMatch = await bcrypt.compare(password, existingUser.password);
-        if(!isMatch){
-            throw new Error("Incorrect email address or password.");
-        }
-
-        return existingUser;
-
-    } catch (error: any) {
-        throw new Error(error.message);
-    }
-}

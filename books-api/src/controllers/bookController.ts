@@ -41,8 +41,13 @@ export const getBook = async (req: Request, res: Response) => {
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id; // Assuming user ID is passed in the URL
-    const books = await bookService.getBooks(userId);
+    const { userId } = req.query; // Assuming user ID is passed in the URL
+  
+    if (!userId) {
+      res.status(400).json({ message: "User ID is required" });
+    }
+
+    const books = await bookService.getBooks(userId as string);
     res.status(200).json(books);
   } catch (error) {
     res.status(500).json({ message: "Error fetching books" });

@@ -21,22 +21,6 @@ export const getUserProfile = async (req: Request, res: Response) => {
     }
   };
 
-export const registerUser = async (req: Request, res: Response) => {
-  try {
-    const userData = req.body;
-    const newUser = await authService.registerUser(userData);
-    res.status(201).json(newUser);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res
-        .status(500)
-        .json({ message: "Error registering user: " + error.message });
-    } else {
-      res.status(500).json({ message: "Unknown error occurred" });
-    }
-  }
-};
-
 export const signInUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -51,6 +35,22 @@ export const signInUser = async (req: Request, res: Response) => {
       res
         .status(500)
         .json({ message: "Error signing in user: " + error.message });
+    } else {
+      res.status(500).json({ message: "Unknown error occurred" });
+    }
+  }
+};
+
+export const signUpUser = async (req: Request, res: Response) => {
+  try {
+    const userData = req.body;
+    const newUser = await authService.signUpUser(userData);
+    res.status(201).json(newUser);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ message: "Error registering user: " + error.message });
     } else {
       res.status(500).json({ message: "Unknown error occurred" });
     }

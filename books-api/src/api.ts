@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import bookRoutes from "./routes/bookRoutes";
@@ -12,6 +13,7 @@ connectDB();
 
 // Middleware
 app.use(express.json());
+app.use(cors())
 
 // Routes
 app.use("/api/auth", authRoutes);

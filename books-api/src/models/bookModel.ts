@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IBook extends Document {
   isbn: string;
   notes?: string;
+  rating?: number;
   readDate?: Date;
   summary: string;
   title: string;
@@ -12,9 +13,10 @@ export interface IBook extends Document {
 const bookSchema: Schema = new mongoose.Schema(
   {
     isbn: { type: String, required: true, unique: true },
-    notes: { type: String },
+    notes: { type: String, default: null },
+    rating: { type: Number, min: 1, max: 5, default: null },
     readDate: { type: Date, default: null },
-    summary: { type: String, required: true },
+    summary: { type: String },
     title: { type: String, required: true },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
