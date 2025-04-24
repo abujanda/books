@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { NextPage } from "next";
-import Image from "next/image";
 import { Add as PlusIcon } from "@mui/icons-material";
 import {
   Box,
@@ -12,13 +11,12 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
+import styles from "./page.module.css";
 import { bookApi } from "@/api/book-api";
-import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
 import { paths } from "@/paths";
-import styles from "./page.module.css";
 import { BookPreview } from "@/sections/book/book-preview";
 import { Book } from "@/types/book";
 
@@ -31,6 +29,7 @@ const useBooks = () => {
 
   const fetchBooks = useCallback(async () => {
     try {
+      // TODO: Replace with authentication info
       const books = await bookApi.getBooks("67edaebdcafe04054f9b64ed");
 
       if (isMounted()) {
@@ -63,17 +62,14 @@ const Page: NextPage = () => {
     );
   }
 
-  console.log("Printing books...");
-  console.log(state);
-
   return (
     <>
       <Seo title="Notes: Books Overview" />
       <Box component="main" sx={{ flexGrow: 1, py: 8 }}>
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           <Stack spacing={4}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Typography variant="h4">Books</Typography>
+              <Typography variant="h4">Notes</Typography>
               <Stack alignItems="center" direction="row" spacing={3}>
                 <Button
                   color="primary"
@@ -90,20 +86,21 @@ const Page: NextPage = () => {
                 </Button>
               </Stack>
             </Stack>
-          </Stack>
-          <Stack alignItems="center" spacing={2}>
-            {state.map((book, index) => (
-              <BookPreview
-                key={index}
-                id={book._id}
-                isbn={book.isbn}
-                notes={book.notes}
-                rating={book.rating}
-                readDate={book.readDate}
-                summary={book.summary}
-                title={book.title}
-              />
-            ))}
+
+            <Stack spacing={3}>
+              {state.map((book, index) => (
+                <BookPreview
+                  key={index}
+                  id={book._id}
+                  isbn={book.isbn}
+                  notes={book.notes}
+                  rating={book.rating}
+                  readDate={book.readDate}
+                  summary={book.summary}
+                  title={book.title}
+                />
+              ))}
+            </Stack>
           </Stack>
         </Container>
       </Box>

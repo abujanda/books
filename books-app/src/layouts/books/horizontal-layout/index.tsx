@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import type { Theme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
-//import type { NavColor } from "../../../types/settings";
+import type { NavColor } from "@/types/settings";
 //import { MobileNav } from "../mobile-nav";
 import { TopNav } from "./top-nav";
 
@@ -40,37 +40,24 @@ const useMobileNav = () => {
   };
 };
 
-const HorizontalLayoutRoot = styled("div")({
-  display: "flex",
-  flex: "1 1 auto",
-  maxWidth: "100%",
-});
-
-const HorizontalLayoutContainer = styled("div")({
-  display: "flex",
-  flex: "1 1 auto",
-  flexDirection: "column",
-  width: "100%",
-});
+const HorizontalLayoutRoot = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  height: "100%",
+  marginTop: "48px",
+}));
 
 interface HorizontalLayoutProps {
   children?: ReactNode;
-  //navColor?: NavColor;
 }
 
 export const HorizontalLayout: FC<HorizontalLayoutProps> = (props) => {
-  //const { children, navColor } = props;
   const { children } = props;
-  //
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
   const mobileNav = useMobileNav();
 
   return (
     <>
-      <TopNav
-        //color={navColor}
-        onMobileNav={mobileNav.handleOpen}
-      />
+      <TopNav onMobileNav={mobileNav.handleOpen} />
       {/* {!lgUp && (
         <MobileNav
           color={navColor}
@@ -78,9 +65,7 @@ export const HorizontalLayout: FC<HorizontalLayoutProps> = (props) => {
           open={mobileNav.isOpen}
         />
       )} */}
-      <HorizontalLayoutRoot>
-        <HorizontalLayoutContainer>{children}</HorizontalLayoutContainer>
-      </HorizontalLayoutRoot>
+      <HorizontalLayoutRoot>{children}</HorizontalLayoutRoot>
     </>
   );
 };

@@ -35,14 +35,18 @@ export const getBook = async (req: Request, res: Response) => {
       res.status(404).json({ message: "Book not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error fetching book" });
+    // Return 404 if the book is not found
+    // This is a more user-friendly error message
+    // in case the book ID is invalid or not found in the database
+    res.status(404).json({ message: "Book not found" });
+    //res.status(500).json({ message: "Error fetching book" });
   }
 };
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
     const { userId } = req.query; // Assuming user ID is passed in the URL
-  
+
     if (!userId) {
       res.status(400).json({ message: "User ID is required" });
     }

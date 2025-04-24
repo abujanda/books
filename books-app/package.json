@@ -13,7 +13,8 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/lab": "^7.0.0-beta.10",
-    "@mui/material": "^7.0.1",
+    "@mui/material": "^7.0.2",
+    "@mui/system": "^7.0.2",
     "@mui/x-date-pickers": "^7.28.3",
     "@udecode/cn": "^46.0.9",
     "@udecode/plate": "^46.0.10",
@@ -21,6 +22,7 @@
     "@udecode/plate-block-quote": "^44.0.0",
     "@udecode/plate-core": "^46.0.10",
     "@udecode/plate-heading": "^44.0.0",
+    "@untitled-ui/icons-react": "^0.1.4",
     "axios": "^1.8.4",
     "date-fns": "^2.30.0",
     "formik": "^2.4.6",
@@ -31,6 +33,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
+    "styled-components": "^6.1.17",
     "yup": "^1.6.1"
   },
   "devDependencies": {

@@ -19,7 +19,7 @@ export const BookNotes: FC<BookNotesProps> = (props) => {
 
   return (
     <Stack spacing={3}>
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" spacing={3}>
         <Image
           src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
           alt={title}

@@ -29,7 +29,7 @@ const Page: PageType = () => {
         <Container maxWidth="lg">
           <Stack spacing={3}>
             <Stack spacing={1}>
-              <Typography variant="h4">Create a new book</Typography>
+              <Typography variant="h4">Create a book</Typography>
               <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                 <Link
                   color="text.primary"

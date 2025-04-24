@@ -1,14 +1,6 @@
 import type { FC } from "react";
 import Image from "next/image";
-import {
-  Box,
-  Typography,
-  Link,
-  Card,
-  CardMedia,
-  CardContent,
-  Stack,
-} from "@mui/material";
+import { Typography, Link, Card, CardContent, Stack } from "@mui/material";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookPreviewProps {
@@ -18,7 +10,7 @@ interface BookPreviewProps {
   rating?: number;
   readDate?: Date;
   summary?: string;
-  title?: string;
+  title: string;
 }
 
 export const BookPreview: FC<BookPreviewProps> = (props) => {
@@ -28,43 +20,48 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
   const formattedRating = rating ? `${rating}/5` : "No rating provided";
 
   return (
-    <Card sx={{ display: "flex", p: 2, maxWidth: 800, }}>
-      <CardMedia
-        component="img"
-        image={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
-        alt={title}
-        sx={{ width: 200, height: 200, mr: 2 }}
-      />
-      <CardContent sx={{ padding: 0 }}>
-        <Typography
-          variant="h6"
-          component={Link}
-          href={`/books/${id}`}
-          underline="hover"
-          sx={{ color: "purple", fontWeight: "bold", fontSize: "1.25rem" }}
-        >
-          {title}
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ mt: 0.5 }}>
-          <Typography
-            variant="body2"
-            sx={{ color: "#666", fontStyle: "italic" }}
-          >
-            Date read: {formattedReadDate}.
-          </Typography>
-          {rating && (
+    <Card raised>
+      <CardContent sx={{ p: 4 }}>
+        <Stack direction="row" spacing={2}>
+          <Image
+            src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
+            alt={title}
+            width={150}
+            height={200}
+          />
+          <div>
             <Typography
-              variant="body2"
-              sx={{ color: "#666", fontStyle: "italic" }}
+              variant="h5"
+              component={Link}
+              fontWeight="bold"
+              href={`/books/${id}`}
+              underline="hover"
             >
-              How strongly I recommend it: {formattedRating}
+              {title}
             </Typography>
-          )}
+            <Stack direction="row" spacing={1} sx={{ mt: 0.5 }}>
+              <Typography
+                color="text.secondary"
+                fontStyle="italic"
+                variant="body2"
+              >
+                Date read: {formattedReadDate}.
+              </Typography>
+              {rating && (
+                <Typography
+                  color="text.secondary"
+                  fontStyle="italic"
+                  variant="body2"
+                >
+                  How strongly I recommend it: {formattedRating}
+                </Typography>
+              )}
+            </Stack>
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              {summary}
+            </Typography>
+          </div>
         </Stack>
-
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          {summary}
-        </Typography>
       </CardContent>
     </Card>
   );

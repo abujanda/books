@@ -5,24 +5,20 @@ import { notFound, useParams } from "next/navigation";
 import {
   Box,
   Breadcrumbs,
-  Button,
   Container,
   Link,
   Stack,
-  SvgIcon,
   Typography,
 } from "@mui/material";
-import Edit02Icon from "@untitled-ui/icons-react/build/esm/Edit02";
 import { bookApi } from "@/api/book-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
 import { paths } from "@/paths";
-import { BookNotes } from "@/sections/book/book-notes";
 import { Page as PageType } from "@/types/page";
-
 import { Book } from "@/types/book";
+import { BookEditForm } from "@/sections/book/book-edit-form";
 
 const useBook = () => {
   const isMounted = useMounted();
@@ -72,7 +68,7 @@ const Page: PageType = () => {
 
   return (
     <>
-      <Seo title="Notes: View Book" />
+      <Seo title="Notes: Update Book" />
       <Box
         component="main"
         sx={{
@@ -82,45 +78,37 @@ const Page: PageType = () => {
       >
         <Container maxWidth="lg">
           <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Stack spacing={1}>
-                <Typography variant="h4">Book</Typography>
-                <Breadcrumbs separator={<BreadcrumbsSeparator />}>
-                  <Link
-                    color="primary"
-                    component={RouterLink}
-                    href={paths.index}
-                    variant="subtitle2"
-                  >
-                    Notes
-                  </Link>
-                  <Typography color="text.secondary" variant="subtitle2">
-                    Book
-                  </Typography>
-                </Breadcrumbs>
-              </Stack>
-              <Stack alignItems="center" direction="row" spacing={3}>
-                <Button
+            <Stack spacing={1}>
+              <Typography variant="h4">Edit book</Typography>
+              <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+                <Link
                   color="primary"
                   component={RouterLink}
-                  endIcon={
-                    <SvgIcon>
-                      <Edit02Icon />
-                    </SvgIcon>
-                  }
-                  href={`/books/${book?._id}/edit`}
-                  variant="contained"
+                  href={paths.index}
+                  variant="subtitle2"
                 >
+                  Notes
+                </Link>
+                <Link
+                  color="primary"
+                  component={RouterLink}
+                  href={`/books/${book._id}`}
+                  variant="subtitle2"
+                >
+                  Book
+                </Link>
+                <Typography color="text.secondary" variant="subtitle2">
                   Edit
-                </Button>
-              </Stack>
+                </Typography>
+              </Breadcrumbs>
             </Stack>
-            <BookNotes
-              dateRead={book.readDate!}
+            <BookEditForm
+              bookId={book._id}
               isbn={book.isbn}
               notes={book.notes}
               rating={book.rating}
-              summary={book.summary!}
+              readDate={book.readDate}
+              summary={book.summary}
               title={book.title}
             />
           </Stack>
