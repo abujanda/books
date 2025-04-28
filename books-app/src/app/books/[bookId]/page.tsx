@@ -5,23 +5,21 @@ import { notFound, useParams } from "next/navigation";
 import {
   Box,
   Breadcrumbs,
-  Button,
   Container,
   Link,
   Stack,
-  SvgIcon,
   Typography,
 } from "@mui/material";
-import Edit02Icon from "@untitled-ui/icons-react/build/esm/Edit02";
 import { bookApi } from "@/api/book-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
 import { paths } from "@/paths";
+import { BookActionsButton } from "@/sections/book/book-actions-button";
+import { BookDeleteDialog } from "@/sections/book/book-delete-dialog";
 import { BookNotes } from "@/sections/book/book-notes";
 import { Page as PageType } from "@/types/page";
-
 import { Book } from "@/types/book";
 
 const useBook = () => {
@@ -35,6 +33,7 @@ const useBook = () => {
       const book = await bookApi.getBook(bookId as string);
 
       if (isMounted()) {
+        console.log("fetching book...");
         setBook(book);
       }
     } catch (error) {
@@ -55,6 +54,21 @@ const useBook = () => {
 
 const Page: PageType = () => {
   const { book, loading } = useBook();
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean }>({
+    isOpen: false,
+  });
+
+  const handleDeleteDialogOpen = useCallback((): void => {
+    setDeleteDialog({
+      isOpen: true,
+    });
+  }, []);
+
+  const handleDeleteDialogClose = useCallback((): void => {
+    setDeleteDialog({
+      isOpen: false,
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -100,19 +114,10 @@ const Page: PageType = () => {
                 </Breadcrumbs>
               </Stack>
               <Stack alignItems="center" direction="row" spacing={3}>
-                <Button
-                  color="primary"
-                  component={RouterLink}
-                  endIcon={
-                    <SvgIcon>
-                      <Edit02Icon />
-                    </SvgIcon>
-                  }
-                  href={`/books/${book?._id}/edit`}
-                  variant="contained"
-                >
-                  Edit
-                </Button>
+                <BookActionsButton
+                  bookId={book._id}
+                  onDelete={handleDeleteDialogOpen}
+                />
               </Stack>
             </Stack>
             <BookNotes
@@ -122,6 +127,11 @@ const Page: PageType = () => {
               rating={book.rating}
               summary={book.summary!}
               title={book.title}
+            />
+            <BookDeleteDialog
+              bookId={book._id}
+              onClose={handleDeleteDialogClose}
+              open={deleteDialog.isOpen}
             />
           </Stack>
         </Container>

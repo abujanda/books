@@ -220,7 +220,11 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
           justifyContent="flex-end"
           spacing={1}
         >
-          <Button color="inherit" href={paths.index} LinkComponent={RouterLink}>
+          <Button
+            color="inherit"
+            href={`/books/${bookId}`}
+            LinkComponent={RouterLink}
+          >
             Cancel
           </Button>
           <Button

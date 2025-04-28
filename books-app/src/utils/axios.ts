@@ -43,7 +43,7 @@ const sleep =
       setTimeout(() => resolve(response), ms)
     );
 
-const sleepTimeout = 0;
+const sleepTimeout = 1500;
 
 const responseBody = (response: AxiosResponse) => response.data;
 

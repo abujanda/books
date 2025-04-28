@@ -64,7 +64,7 @@ export const BookCreateForm: FC = (props) => {
     onSubmit: async (values, helpers) => {
       try {
         // Call the API to create a new book
-        await bookApi.createBook({
+        const book = await bookApi.createBook({
           isbn: values.isbn,
           notes: values.notes,
           rating: values.rating,
@@ -78,9 +78,9 @@ export const BookCreateForm: FC = (props) => {
         helpers.setSubmitting(false);
 
         // Redirect to the books page or show a success message
-        //toast.success("Book created!");
+        toast.success("Book created!");
         setTimeout(() => {
-          //router.push(paths.index);
+          router.push(`/books/${book._id}`);
         }, 2000);
       } catch (error: any) {
         console.error(error);
