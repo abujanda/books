@@ -11,8 +11,8 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import styles from "./page.module.css";
 import { bookApi } from "@/api/book-api";
+import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
@@ -53,13 +53,7 @@ const Page: NextPage = () => {
   const { state, loading } = useBooks();
 
   if (loading) {
-    return (
-      <div className={styles.page}>
-        <main className={styles.main}>
-          <h1>Loading...</h1>
-        </main>
-      </div>
-    );
+    return <LoadingBackdrop />;
   }
 
   return (

@@ -122,7 +122,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
               spacing={2}
               sx={{ flexGrow: 1 }}
             >
-              <AccountButton />
+              {/* <AccountButton /> */}
             </Stack>
           </Stack>
         </Stack>

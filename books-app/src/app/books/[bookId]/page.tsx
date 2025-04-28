@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { bookApi } from "@/api/book-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
+import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
@@ -33,7 +34,6 @@ const useBook = () => {
       const book = await bookApi.getBook(bookId as string);
 
       if (isMounted()) {
-        console.log("fetching book...");
         setBook(book);
       }
     } catch (error) {
@@ -71,13 +71,7 @@ const Page: PageType = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="page">
-        <main className="main">
-          <h1>Loading...</h1>
-        </main>
-      </div>
-    );
+    return <LoadingBackdrop />;
   }
 
   if (!book) {

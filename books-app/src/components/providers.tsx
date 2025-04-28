@@ -7,6 +7,10 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { AuthProvider, AuthConsumer } from "@/contexts/jwt-context";
 import { Toaster } from "@/components/toaster";
 import { createTheme } from "@/theme";
+import { LoadingBackdrop } from "./loading-backdrop";
+
+const DEFAULT_COLOR_PRESET = "indigo";
+const DEFAULT_CONTRAST = "high";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -18,18 +22,17 @@ export const Providers = ({ children }: ProvidersProps) => {
       <AuthProvider>
         <AuthConsumer>
           {(auth) => {
-            if (!auth.isInitialized) {
-              return <div>Loading...</div>;
-            }
+            //const showLoading = !auth.isInitialized;
 
             const theme = createTheme({
-              colorPreset: "indigo",
-              contrast: "high",
+              colorPreset: DEFAULT_COLOR_PRESET,
+              contrast: DEFAULT_CONTRAST,
             });
 
             return (
               <ThemeProvider theme={theme}>
                 <CssBaseline />
+                {/* {showLoading ? <LoadingBackdrop /> : children} */}
                 {children}
                 <Toaster />
               </ThemeProvider>
