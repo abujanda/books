@@ -116,3 +116,4 @@ npm run dev
 - User authentication and protected routes
 - Tagging or categorizing books
 - Search and filter capabilities
+- Rich text notes support
