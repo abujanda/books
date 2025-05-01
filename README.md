@@ -71,6 +71,12 @@ const bookSchema: Schema = new mongoose.Schema(
 | PUT    | `/api/books/:id`       | Update a book by ID      |
 | DELETE | `/api/books/:id`       | Delete a book by ID      |
 
+## 🎨 `book-app` — Frontend Overview
+The `book-app` allows the client to:
+- View, create, update, and delete book entries
+- Rate and summarize books
+- Responsive UI with Material Design
+
 ## 🧪Getting Started
 
 ### 1. Clone the repo
