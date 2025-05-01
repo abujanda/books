@@ -4,8 +4,8 @@ Welcome to the **Book Notes App**!
 This project allows users to track notes about the books they've read, including summaries, ratings, and reading dates.  
 The project is built using the **MERN stack**: **MongoDB, Express, React.js/Next.js, and Node.js**, and is divided into two main components:
 
-- [`book-api`](./book-api) — The backend API (Node.js + Express)
-- [`book-app`](./book-app) — The frontend application (Next.js)
+- [`books-api`](./books-api) — The backend API (Node.js + Express)
+- [`books-app`](./books-app) — The frontend application (Next.js)
 
 ## 📚 Project Structure
 
@@ -29,9 +29,9 @@ The project is built using the **MERN stack**: **MongoDB, Express, React.js/Next
 - **Delete** a book note
 - **User association** with each book
 
-## 📦`book-api` — Backend Overview
+## 📦`books-api` — Backend Overview
 
-The `book-api` contains:
+The `books-api` contains:
 
 - **Models**: Mongoose schemas for books and users
 - **Controllers**: Express route handlers
@@ -71,8 +71,8 @@ const bookSchema: Schema = new mongoose.Schema(
 | PUT    | `/api/books/:id`       | Update a book by ID      |
 | DELETE | `/api/books/:id`       | Delete a book by ID      |
 
-## 🎨 `book-app` — Frontend Overview
-The `book-app` allows the client to:
+## 🎨 `books-app` — Frontend Overview
+The `books-app` allows the client to:
 - View, create, update, and delete book entries
 - Rate and summarize books
 - Responsive UI with Material Design
@@ -89,9 +89,9 @@ cd books
 ### 2. Install dependencies for both projects
 
 ```bash
-cd book-api
+cd books-api
 npm install
-cd ../book-app
+cd ../books-app
 npm install
 ````
 
@@ -102,12 +102,12 @@ Each project has its own `.env.example` file. Rename to .env and fill in appropr
 Start the backend:
 
 ```bash
-cd book-api
+cd books-api
 npm run dev
 ````
 Start the frontend:
 ```bash
-cd ../book-app
+cd ../books-app
 npm run dev
 ````
 
