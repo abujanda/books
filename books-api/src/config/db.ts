@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { dbConfig } from "../config";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || "");
-    console.log("MongoDB connected successfully");
+    if (!dbConfig.mongo_uri) {
+      throw new Error("Add Mongo URI to .env");
+    }
+
+    await mongoose.connect(dbConfig.mongo_uri || "", { dbName: "db-book-notes"});
+    console.log("MongoDB connected successfully to", dbConfig.mongo_uri);
   } catch (error) {
     console.error("MongoDB connection failed:", error);
     process.exit(1); // Exit process with failure
