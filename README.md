@@ -77,6 +77,30 @@ The `books-app` allows the client to:
 - Rate and summarize books
 - Responsive UI with Material Design
 
+## 🖼️ Screenshots
+
+Take a look at how the Book Notes app works:
+
+**View the list of books**
+
+<img src="assets/images/home.png" alt="Home page" width="600"/>
+
+**Create a book**
+
+<img src="assets/images/create-book.png" alt="Create book page" width="600"/>
+
+**View a book**
+
+<img src="assets/images/book-index.png" alt="Book index page" width="600"/>
+
+**Edit a book**
+
+<img src="assets/images/edit-book.png" alt="Edit book page" width="600"/>
+
+**Delete a book**
+
+<img src="assets/images/delete-book.png" alt="Delete book page" width="600"/>
+
 ## 🧪Getting Started
 
 ### 1. Clone the repo
