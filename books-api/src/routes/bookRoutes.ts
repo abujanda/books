@@ -1,7 +1,20 @@
 import express from "express";
-import { createBook, deleteBook, getBook, getBooks, updateBook } from "../controllers/bookController";
+import {
+  createBook,
+  deleteBook,
+  getBook,
+  getBooks,
+  updateBook,
+} from "../controllers/bookController";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = express.Router();
+
+// router.get("/", authMiddleware, getBooks); // Get all books
+// router.post("/create", authMiddleware, createBook); // Create a new book
+// router.get("/:id", authMiddleware, getBook); // Get a book by ID
+// router.delete("/:id", authMiddleware, deleteBook); // Delete a book by ID
+// router.put("/:id", authMiddleware, updateBook); // Update a book by ID
 
 router.get("/", getBooks);
 router.post("/create", createBook);
