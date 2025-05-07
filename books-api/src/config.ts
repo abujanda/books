@@ -9,3 +9,7 @@ export const dbConfig = {
     ? process.env.MONGO_URI_PROD
     : process.env.MONGO_URI_DEV,
 };
+
+export const jwtConfig = {
+  secret: process.env.JWT_SECRET || "",
+};
