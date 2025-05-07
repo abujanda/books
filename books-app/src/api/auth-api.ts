@@ -4,11 +4,11 @@ import { requests } from "@/utils/axios";
 
 class AuthApi {
   me(): Promise<User> {
-    return requests.get("/auth"); //TODO: Add this endpoint to the backend
+    return requests.get("/auth/me");
   }
 
   signIn(options: SignInOptions): Promise<User> {
-    return requests.post("/auth/signin", options, undefined, true);
+    return requests.post("/auth/signin", options);
   }
 
   signUp(options: SignUpOptions): Promise<User> {
