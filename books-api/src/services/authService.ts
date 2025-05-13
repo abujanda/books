@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import PasswordValidator from "password-validator";
 import validator from "validator";
-import type { UserDto } from "../dtos/userDto";
+import type { UserDto } from "../dtos/auth/userDto";
 import User, { IUser } from "../models/userModel";
 
 const passwordSchema = new PasswordValidator();

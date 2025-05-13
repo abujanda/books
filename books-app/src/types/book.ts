@@ -1,5 +1,5 @@
-export interface Book {
-  _id: string;
+interface IBook {
+  id: string;
   isbn: string;
   notes?: string;
   rating?: number;
@@ -9,20 +9,12 @@ export interface Book {
   userId: string;
 }
 
-export interface BookCreateOptions {
-  isbn: string;
-  notes?: string;
-  readDate: Date;
-  rating?: number;
-  summary?: string;
-  title: string;
-  userId: string;
-}
-export interface BookUpdateOptions {
-  isbn: string;
-  notes?: string;
-  rating?: number;
-  readDate?: Date;
-  summary?: string;
-  title?: string;
-}
+interface ICreateBookOptions extends Omit<IBook, "id"> {}
+
+interface IUpdateBookOptions extends Omit<IBook, "id" | "userId"> {}
+
+export type Book = IBook;
+
+export type CreateBookOptions = ICreateBookOptions;
+
+export type UpdateBookOptions = IUpdateBookOptions;
