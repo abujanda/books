@@ -15,7 +15,6 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: "My Book Notes",
   description: "Book notes application",
-  themeColor: "#000000",
   icons: {
     icon: "/favicon.ico",
   },

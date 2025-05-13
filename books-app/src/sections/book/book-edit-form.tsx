@@ -4,6 +4,7 @@ import type { ChangeEvent, FC } from "react";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+import DomPurify from "dompurify";
 import { useFormik } from "formik";
 import { debounce } from "lodash";
 import {
@@ -19,9 +20,9 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { bookApi } from "@/api/book-api";
+import { QuillEditor } from "@/components/quill-editor";
 import { RouterLink } from "@/components/router-link";
 import { useRouter } from "@/hooks/use-router";
-import { paths } from "@/paths";
 
 const validationSchema = Yup.object({
   isbn: Yup.string().required("ISBN is required"),
@@ -61,7 +62,7 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
         // Call the API to create a new book
         await bookApi.updateBook(bookId, {
           isbn: values.isbn,
-          notes: values.notes,
+          notes: DomPurify.sanitize(values.notes), // Sanitize HTML before sending to server,
           rating: values.rating,
           readDate: values.readDate,
           summary: values.summary,
@@ -92,8 +93,7 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
   });
 
   const handleNotesChange = useCallback(
-    debounce((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const value = event.target.value;
+    debounce((value: string) => {
       formik.setFieldValue("notes", value);
     }, 1000),
     []
@@ -189,28 +189,13 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
                 <Typography variant="h6">Notes</Typography>
               </Grid>
               <Grid size={{ xs: 12, md: 8 }}>
-                <TextField
-                  defaultValue={formik.values.notes}
-                  error={!!(formik.touched.notes && formik.errors.notes)}
-                  fullWidth
-                  helperText={formik.touched.notes && formik.errors.notes}
-                  name="notes"
-                  onBlur={formik.handleBlur}
+                <QuillEditor
                   onChange={handleNotesChange}
                   placeholder="Write something..."
-                  multiline
-                  rows={8}
-                />
-              </Grid>
-
-              {/* <PlateEditor
-                  onChange={(value) => {
-                    formik.setFieldValue("notes", value);
-                  }}
-                  placeholder="Write something"
                   sx={{ height: 400 }}
                   value={formik.values.notes}
-                /> */}
+                />
+              </Grid>
             </Grid>
           </CardContent>
         </Card>
@@ -222,12 +207,14 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
         >
           <Button
             color="inherit"
+            disabled={formik.isSubmitting}
             href={`/books/${bookId}`}
             LinkComponent={RouterLink}
           >
             Cancel
           </Button>
           <Button
+            disabled={!formik.dirty || formik.isSubmitting}
             loading={formik.isSubmitting}
             type="submit"
             variant="contained"
