@@ -47,7 +47,7 @@ const useBook = () => {
     if (bookId) {
       handleBookGet();
     }
-  }, []);
+  }, [handleBookGet]);
 
   return { book, loading };
 };
@@ -109,7 +109,7 @@ const Page: PageType = () => {
               </Stack>
               <Stack alignItems="center" direction="row" spacing={3}>
                 <BookActionsButton
-                  bookId={book._id}
+                  bookId={book.id}
                   onDelete={handleDeleteDialogOpen}
                 />
               </Stack>
@@ -123,7 +123,7 @@ const Page: PageType = () => {
               title={book.title}
             />
             <BookDeleteDialog
-              bookId={book._id}
+              bookId={book.id}
               onClose={handleDeleteDialogClose}
               open={deleteDialog.isOpen}
             />

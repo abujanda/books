@@ -45,7 +45,7 @@ const useBook = () => {
     if (bookId) {
       handleBookGet();
     }
-  }, []);
+  }, [handleBookGet]);
 
   return { book, loading };
 };
@@ -87,7 +87,7 @@ const Page: PageType = () => {
                 <Link
                   color="primary"
                   component={RouterLink}
-                  href={`/books/${book._id}`}
+                  href={`/books/${book.id}`}
                   variant="subtitle2"
                 >
                   Book
@@ -98,7 +98,7 @@ const Page: PageType = () => {
               </Breadcrumbs>
             </Stack>
             <BookEditForm
-              bookId={book._id}
+              bookId={book.id}
               isbn={book.isbn}
               notes={book.notes}
               rating={book.rating}

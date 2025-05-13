@@ -85,7 +85,7 @@ const Page: NextPage = () => {
               {state.map((book, index) => (
                 <BookPreview
                   key={index}
-                  id={book._id}
+                  id={book.id}
                   isbn={book.isbn}
                   notes={book.notes}
                   rating={book.rating}

@@ -1,8 +1,8 @@
-import type { Book, BookCreateOptions, BookUpdateOptions } from "@/types/book";
-import {requests} from "@/utils/axios";
+import type { Book, CreateBookOptions, UpdateBookOptions } from "@/types/book";
+import { requests } from "@/utils/axios";
 
 class BookApi {
-  createBook(options: BookCreateOptions): Promise<Book> {
+  createBook(options: CreateBookOptions): Promise<Book> {
     return requests.post("/books/create", options);
   }
 
@@ -11,14 +11,14 @@ class BookApi {
   }
 
   getBooks(userId: string): Promise<Book[]> {
-    return requests.query('/books', { userId });
+    return requests.query("/books", { userId });
   }
 
   getBook(id: string): Promise<Book> {
     return requests.get(`/books/${id}`);
   }
 
-  updateBook(id: string, options: BookUpdateOptions): Promise<Book> {
+  updateBook(id: string, options: UpdateBookOptions): Promise<Book> {
     return requests.put(`/books/${id}`, options);
   }
 }

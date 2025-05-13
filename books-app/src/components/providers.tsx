@@ -8,6 +8,7 @@ import { AuthProvider, AuthConsumer } from "@/contexts/jwt-context";
 import { Toaster } from "@/components/toaster";
 import { createTheme } from "@/theme";
 import { LoadingBackdrop } from "./loading-backdrop";
+import "react-quill-new/dist/quill.snow.css";
 
 const DEFAULT_COLOR_PRESET = "indigo";
 const DEFAULT_CONTRAST = "high";

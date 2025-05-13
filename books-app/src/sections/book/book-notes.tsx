@@ -14,7 +14,6 @@ interface BookNotesProps {
 
 export const BookNotes: FC<BookNotesProps> = (props) => {
   const { dateRead, isbn, notes, rating, summary, title } = props;
-
   const formattedReadDate = utcToLocal(dateRead, false, false);
 
   return (
@@ -46,10 +45,9 @@ export const BookNotes: FC<BookNotesProps> = (props) => {
         <Typography variant="body1">{summary}</Typography>
       </Stack>
       {notes && (
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Typography variant="h6">Notes</Typography>
-
-          <Typography variant="body1">{notes}</Typography>
+          <div dangerouslySetInnerHTML={{ __html: notes }} />
         </Stack>
       )}
     </Stack>
