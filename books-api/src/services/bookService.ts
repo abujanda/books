@@ -1,4 +1,5 @@
 import Book from "../models/bookModel";
+import Tag from "../models/tagModel";
 import { BookDto } from "../dtos/book/bookDto";
 import { CreateBookOptionsDto } from "../dtos/book/options/createBookOptionsDto";
 import { UpdateBookOptionsDto } from "../dtos/book/options/updateBookOptionsDto";
@@ -19,15 +20,23 @@ export const createBook = async (
   try {
     const { html, text } = processNotes(options.notes);
 
+    const tagSlugs = options.tags || [];
+    const tags = await Tag.find({ slug: { $in: tagSlugs } });
+    const tagIds = tags.map((tag) => tag._id);
+
     const newBook = new Book({
       ...options,
       notes: {
         html: html,
         plain: text,
       },
+      tags: tagIds,
     });
 
     await newBook.save();
+
+    // Populate the tags field with the actual tag documents
+    await newBook.populate("tags");
     return newBook.toDataTransferObject();
   } catch (error: any) {
     console.error(error);
@@ -87,6 +96,10 @@ export const updateBook = async (
   try {
     const { html, text } = processNotes(options.notes);
 
+    const tagSlugs = options.tags || [];
+    const tags = await Tag.find({ slug: { $in: tagSlugs } });
+    const tagIds = tags.map((tag) => tag._id);
+
     const book = await Book.findByIdAndUpdate(
       bookId,
       {
@@ -96,6 +109,7 @@ export const updateBook = async (
             html: html,
             plain: text,
           },
+          tags: tagIds,
         },
       },
       { new: true }
@@ -103,6 +117,7 @@ export const updateBook = async (
     if (!book) {
       throw new Error("Book not found");
     }
+    await book.populate("tags");
     return book.toDataTransferObject();
   } catch (error: any) {
     console.error(error);

@@ -5,6 +5,7 @@ export interface IBookDto {
   rating?: number | null;
   readDate?: Date | null;
   summary: string;
+  tags?: string[];
   title: string;
   userId: string;
 }

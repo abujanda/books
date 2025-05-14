@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { BookDto } from "../dtos/book/bookDto";
+import { ITag } from "./tagModel";
 
 export interface IBook extends Document {
   isbn: string;
@@ -26,6 +27,12 @@ const BookSchema: Schema = new mongoose.Schema(
     rating: { type: Number, min: 0, max: 5, default: null },
     readDate: { type: Date, default: null },
     summary: { type: String },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
     title: { type: String, required: true },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,12 +44,18 @@ const BookSchema: Schema = new mongoose.Schema(
 );
 
 BookSchema.methods.toDataTransferObject = function (): BookDto {
+  
+  const tags: string[] = this.populated("tags")
+    ? this.tags.map((tag: ITag) => tag.name)
+    : [];
+
   return {
     id: (this._id as unknown as string).toString(),
     isbn: this.isbn,
     notes: typeof this.notes.html === "string" ? this.notes.html : "",
     rating: this.rating,
     readDate: this.readDate,
+    tags: tags,
     summary: this.summary,
     title: this.title,
     userId: this.userId.toString(),
