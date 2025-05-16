@@ -59,7 +59,7 @@ export const deleteBook = async (bookId: string): Promise<BookDto | null> => {
 
 export const getBook = async (bookId: string): Promise<BookDto | null> => {
   try {
-    const book = await Book.findById(bookId);
+    const book = await Book.findById(bookId).populate("tags");
 
     if (!book) {
       throw new Error("Book not found");

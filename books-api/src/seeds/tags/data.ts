@@ -3,7 +3,6 @@ export const tags = [
     {name: "Business", slug: "business"},
     {name: "Children", slug: "children"},
     {name: "Classics", slug: "classics"},
-    {name: "Cookbooks", slug: "cookbooks"},
     {name: "Comics", slug: "comics"},
     {name: "Cookbooks", slug: "cookbooks"},
     {name: "Crime", slug: "crime"},

@@ -3,6 +3,7 @@ import Tag from "../models/tagModel";
 export const getTags = async () => {
     try {
         const tags = await Tag.find();
+
         if (!tags) {
         throw new Error("Tags not found");
         }

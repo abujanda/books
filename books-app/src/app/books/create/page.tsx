@@ -1,5 +1,6 @@
-'use client';
+"use client";
 
+import { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Breadcrumbs,
@@ -8,14 +9,45 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { tagApi } from "@/api/tag-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
+import { useMounted } from "@/hooks/use-mounted";
 import { paths } from "@/paths";
 import { BookCreateForm } from "@/sections/book/book-create-form";
 import type { Page as PageType } from "@/types/page";
+import type { Tag } from "@/types/tag";
+
+const useTags = () => {
+  const isMounted = useMounted();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const getTags = useCallback(async () => {
+    try {
+      const tags = await tagApi.getTags();
+
+      if (isMounted()) {
+        setTags(tags);
+      }
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
+
+  return { tags, loading };
+};
 
 const Page: PageType = () => {
+  const { tags, loading } = useTags();
+
   return (
     <>
       <Seo title="Notes: Create Book" />
@@ -52,7 +84,7 @@ const Page: PageType = () => {
                 </Typography>
               </Breadcrumbs>
             </Stack>
-            <BookCreateForm />
+            <BookCreateForm tagOptions={tags} tagOptionsLoading={loading} />
           </Stack>
         </Container>
       </Box>

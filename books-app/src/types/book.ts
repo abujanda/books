@@ -5,6 +5,7 @@ interface IBook {
   rating?: number;
   readDate: Date;
   summary?: string;
+  tags?: string[];
   title: string;
   userId: string;
 }

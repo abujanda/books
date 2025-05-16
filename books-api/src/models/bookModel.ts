@@ -46,7 +46,7 @@ const BookSchema: Schema = new mongoose.Schema(
 BookSchema.methods.toDataTransferObject = function (): BookDto {
   
   const tags: string[] = this.populated("tags")
-    ? this.tags.map((tag: ITag) => tag.name)
+    ? this.tags.map((tag: ITag) => tag.slug)
     : [];
 
   return {

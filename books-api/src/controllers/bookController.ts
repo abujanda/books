@@ -27,7 +27,7 @@ export const deleteBook = async (req: Request, res: Response) => {
 
 export const getBook = async (req: Request, res: Response) => {
   try {
-    const bookId = req.params.id; // Assuming book ID is passed in the URL
+    const bookId = req.params.id;
     const book = await bookService.getBook(bookId);
     if (book) {
       res.status(200).json(book);
@@ -60,7 +60,7 @@ export const getBooks = async (req: Request, res: Response) => {
 
 export const updateBook = async (req: Request, res: Response) => {
   try {
-    const bookId = req.params.id; // Assuming book ID is passed in the URL
+    const bookId = req.params.id;
     const bookData = req.body;
     const updatedBook = await bookService.updateBook(bookId, bookData);
     if (updatedBook) {
