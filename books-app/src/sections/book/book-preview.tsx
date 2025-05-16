@@ -18,6 +18,7 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
 
   const formattedReadDate = utcToLocal(readDate!, false, false);
   const formattedRating = rating ? `${rating}/5` : "No rating provided";
+  console.log(formattedRating);
 
   return (
     <Card raised>
@@ -47,7 +48,7 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
               >
                 Date read: {formattedReadDate}.
               </Typography>
-              {rating && (
+              {rating !== undefined && (
                 <Typography
                   color="text.secondary"
                   fontStyle="italic"

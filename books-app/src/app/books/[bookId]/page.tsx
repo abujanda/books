@@ -120,6 +120,7 @@ const Page: PageType = () => {
               notes={book.notes}
               rating={book.rating}
               summary={book.summary!}
+              tags={book.tags}
               title={book.title}
             />
             <BookDeleteDialog

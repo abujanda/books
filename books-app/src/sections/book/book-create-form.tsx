@@ -12,8 +12,11 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   Grid,
+  MenuItem,
   Rating,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -24,6 +27,7 @@ import { QuillEditor } from "@/components/quill-editor";
 import { RouterLink } from "@/components/router-link";
 import { useRouter } from "@/hooks/use-router";
 import { paths } from "@/paths";
+import type { Tag } from "@/types/tag";
 
 interface Values {
   isbn: string;
@@ -32,6 +36,7 @@ interface Values {
   readDate: Date;
   submit: null;
   summary: string;
+  tags: string[];
   title: string;
 }
 
@@ -42,6 +47,7 @@ const initialValues: Values = {
   readDate: new Date(),
   submit: null,
   summary: "",
+  tags: [],
   title: "",
 };
 
@@ -51,10 +57,17 @@ const validationSchema = Yup.object({
   rating: Yup.number().min(0).max(5),
   readDate: Yup.date().required("Read date is required"),
   summary: Yup.string(),
+  tags: Yup.array().of(Yup.string()),
   title: Yup.string().required("Title is required"),
 });
 
-export const BookCreateForm: FC = (props) => {
+interface BookCreateFormProps {
+  tagOptions: Tag[];
+  tagOptionsLoading: boolean;
+}
+
+export const BookCreateForm: FC<BookCreateFormProps> = (props) => {
+  const { tagOptions, tagOptionsLoading } = props;
   const userId = "67edaebdcafe04054f9b64ed"; // TODO: Replace with actual user ID logic
   const router = useRouter();
   const formik = useFormik({
@@ -69,6 +82,7 @@ export const BookCreateForm: FC = (props) => {
           rating: values.rating,
           readDate: values.readDate,
           summary: values.summary,
+          tags: values.tags,
           title: values.title,
           userId: userId,
         });
@@ -118,7 +132,7 @@ export const BookCreateForm: FC = (props) => {
   );
 
   return (
-    <form onSubmit={formik.handleSubmit} {...props}>
+    <form onSubmit={formik.handleSubmit}>
       <Stack spacing={4}>
         <Card>
           <CardContent>
@@ -169,6 +183,39 @@ export const BookCreateForm: FC = (props) => {
                     name="readDate"
                     onChange={handleDateReadChange}
                   />
+                  <div>
+                    <Typography
+                      color="text.secondary"
+                      gutterBottom
+                      variant="subtitle2"
+                    >
+                      Tags
+                    </Typography>
+                    <Select
+                      disabled={tagOptionsLoading}
+                      fullWidth
+                      multiple
+                      name="tags"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                      value={formik.values.tags}
+                    >
+                      {tagOptions.map((option, index) => (
+                        <MenuItem key={index} value={option.slug}>
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
                   <TextField
                     defaultValue={formik.values.summary}
                     error={!!(formik.touched.summary && formik.errors.summary)}

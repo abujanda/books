@@ -11,15 +11,17 @@ import {
   Typography,
 } from "@mui/material";
 import { bookApi } from "@/api/book-api";
+import { tagApi } from "@/api/tag-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
 import { paths } from "@/paths";
-import { Page as PageType } from "@/types/page";
-import { Book } from "@/types/book";
 import { BookEditForm } from "@/sections/book/book-edit-form";
+import { Book } from "@/types/book";
+import { Page as PageType } from "@/types/page";
+import type { Tag } from "@/types/tag";
 
 const useBook = () => {
   const isMounted = useMounted();
@@ -50,10 +52,37 @@ const useBook = () => {
   return { book, loading };
 };
 
-const Page: PageType = () => {
-  const { book, loading } = useBook();
+const useTags = () => {
+  const isMounted = useMounted();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (loading) {
+  const getTags = useCallback(async () => {
+    try {
+      const tags = await tagApi.getTags();
+
+      if (isMounted()) {
+        setTags(tags);
+      }
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
+
+  return { tags, loading };
+};
+
+const Page: PageType = () => {
+  const { book, loading: bookLoading } = useBook();
+  const { tags, loading: tagsLoading } = useTags();
+
+  if (bookLoading) {
     return <LoadingBackdrop />;
   }
 
@@ -104,6 +133,9 @@ const Page: PageType = () => {
               rating={book.rating}
               readDate={book.readDate}
               summary={book.summary}
+              tags={book.tags}
+              tagOptions={tags}
+              tagOptionsLoading={tagsLoading}
               title={book.title}
             />
           </Stack>
