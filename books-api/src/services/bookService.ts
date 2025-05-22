@@ -89,6 +89,38 @@ export const getBooks = async (userId: string): Promise<BookDto[]> => {
   }
 };
 
+export const searchBooks = async (
+  query: string
+): Promise<BookDto[] | null> => {
+  try {
+    // 1. Find matching tags by slug or name (case-insensitive)
+    const matchingTags = await Tag.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { slug: { $regex: query, $options: "i" } },
+      ],
+    });
+
+    const tagIds = matchingTags.map((tag) => tag._id);
+
+    // 2. Find books by title or matching tag (case-insensitive)
+    const books = await Book.find({
+      $or: [
+      { title: { $regex: query, $options: "i" } },
+      { isbn: { $regex: query, $options: "i" } },
+      { tags: { $in: tagIds } },
+      ],
+    }).populate("tags");
+
+    return books.map((book) => ({
+      ...book.toDataTransferObject(),
+    }));
+  } catch (error: any) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+};
+
 export const updateBook = async (
   bookId: string,
   options: UpdateBookOptionsDto

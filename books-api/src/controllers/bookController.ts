@@ -58,6 +58,23 @@ export const getBooks = async (req: Request, res: Response) => {
   }
 };
 
+export const searchBooks = async (req: Request, res: Response) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || typeof q !== "string" || !q.trim()) {
+      res.status(200).json([]);
+    }
+
+    const books = await bookService.searchBooks(String(q).trim());
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error searching books" });
+  }
+};
+
 export const updateBook = async (req: Request, res: Response) => {
   try {
     const bookId = req.params.id;

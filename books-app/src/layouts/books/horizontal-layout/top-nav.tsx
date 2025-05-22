@@ -19,6 +19,7 @@ import { alpha } from "@mui/material";
 import { RouterLink } from "@/components/router-link";
 import { useWindowScroll } from "@/hooks/use-window-scroll";
 import { AccountButton } from "@/layouts/account-button";
+import { SearchButton } from "@/layouts/search-button";
 import { paths } from "@/paths";
 
 const TOP_NAV_HEIGHT: number = 64;
@@ -122,6 +123,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
               spacing={2}
               sx={{ flexGrow: 1 }}
             >
+              <SearchButton />
               {/* <AccountButton /> */}
             </Stack>
           </Stack>
