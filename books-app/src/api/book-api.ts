@@ -18,6 +18,10 @@ class BookApi {
     return requests.get(`/books/${id}`);
   }
 
+  searchBooks(query: string): Promise<Book[]> {
+    return requests.query("/books/search", { q: query });
+  }
+
   updateBook(id: string, options: UpdateBookOptions): Promise<Book> {
     return requests.put(`/books/${id}`, options);
   }

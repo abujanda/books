@@ -1,6 +1,8 @@
+"use client";
+
 import type { FC } from "react";
-import { Box, Chip, Stack, Typography } from "@mui/material";
-import Image from "next/image";
+import { Chip, Paper, Stack, Typography } from "@mui/material";
+import { BookCover } from "./book-cover";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookNotesProps {
@@ -20,14 +22,9 @@ export const BookNotes: FC<BookNotesProps> = (props) => {
   return (
     <Stack spacing={3}>
       <Stack direction="row" spacing={3}>
-        <Image
-          src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
-          alt={title}
-          width={100}
-          height={150}
-        />
+        <BookCover height={150} isbn={isbn} title={title} width={100} />
         <Stack spacing={1}>
-          <Stack spacing={0.5}>
+          <Stack spacing={1}>
             <Typography variant="h5">{title}</Typography>
             <Typography color="text.secondary" variant="subtitle1">
               ISBN: {isbn}
@@ -54,15 +51,19 @@ export const BookNotes: FC<BookNotesProps> = (props) => {
           </Stack>
         </Stack>
       </Stack>
-      <Stack spacing={1}>
-        <Typography variant="h6">Summary</Typography>
-        <Typography variant="body1">{summary}</Typography>
-      </Stack>
-      {notes && (
-        <Stack spacing={2}>
-          <Typography variant="h6">Notes</Typography>
-          <div dangerouslySetInnerHTML={{ __html: notes }} />
+      <Paper elevation={1} sx={{ p: 3 }}>
+        <Stack spacing={1}>
+          <Typography variant="h6">Summary</Typography>
+          <Typography variant="body1">{summary}</Typography>
         </Stack>
+      </Paper>
+      {notes && (
+        <Paper elevation={1} sx={{ p: 3 }}>
+          <Stack spacing={2}>
+            <Typography variant="h6">Notes</Typography>
+            <div dangerouslySetInnerHTML={{ __html: notes }} />
+          </Stack>
+        </Paper>
       )}
     </Stack>
   );
