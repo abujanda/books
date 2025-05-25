@@ -4,6 +4,7 @@ import type { ChangeEvent, FC } from "react";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+import DomPurify from "dompurify";
 import { useFormik } from "formik";
 import { debounce } from "lodash";
 import {
@@ -11,17 +12,21 @@ import {
   Button,
   Card,
   CardContent,
+  Chip,
   Grid,
+  MenuItem,
   Rating,
+  Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { bookApi } from "@/api/book-api";
+import { QuillEditor } from "@/components/quill-editor";
 import { RouterLink } from "@/components/router-link";
 import { useRouter } from "@/hooks/use-router";
-import { paths } from "@/paths";
+import type { Tag } from "@/types/tag";
 
 const validationSchema = Yup.object({
   isbn: Yup.string().required("ISBN is required"),
@@ -29,6 +34,7 @@ const validationSchema = Yup.object({
   rating: Yup.number().min(0).max(5),
   readDate: Yup.date().required("Read date is required"),
   summary: Yup.string(),
+  tags: Yup.array().of(Yup.string()),
   title: Yup.string().required("Title is required"),
 });
 
@@ -39,11 +45,14 @@ interface BookEditFormProps {
   rating?: number;
   readDate: Date;
   summary?: string;
+  tags?: string[];
+  tagOptionsLoading: boolean;
+  tagOptions: Tag[];
   title: string;
 }
 
 export const BookEditForm: FC<BookEditFormProps> = (props) => {
-  const { bookId } = props;
+  const { bookId, tagOptions, tagOptionsLoading } = props;
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -53,6 +62,7 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
       readDate: new Date(props.readDate),
       submit: null,
       summary: props.summary || "",
+      tags: props.tags || [],
       title: props.title,
     },
     validationSchema,
@@ -61,10 +71,11 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
         // Call the API to create a new book
         await bookApi.updateBook(bookId, {
           isbn: values.isbn,
-          notes: values.notes,
+          notes: DomPurify.sanitize(values.notes), // Sanitize HTML before sending to server,
           rating: values.rating,
           readDate: values.readDate,
           summary: values.summary,
+          tags: values.tags,
           title: values.title,
         });
 
@@ -92,8 +103,7 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
   });
 
   const handleNotesChange = useCallback(
-    debounce((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const value = event.target.value;
+    debounce((value: string) => {
       formik.setFieldValue("notes", value);
     }, 1000),
     []
@@ -165,6 +175,39 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
                     name="readDate"
                     onChange={handleDateReadChange}
                   />
+                  <div>
+                    <Typography
+                      color="text.secondary"
+                      gutterBottom
+                      variant="subtitle2"
+                    >
+                      Tags
+                    </Typography>
+                    <Select
+                      disabled={tagOptionsLoading}
+                      fullWidth
+                      multiple
+                      name="tags"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                          ))}
+                        </Box>
+                      )}
+                      value={formik.values.tags}
+                    >
+                      {tagOptions.map((option, index) => (
+                        <MenuItem key={index} value={option.slug}>
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </div>
                   <TextField
                     defaultValue={formik.values.summary}
                     error={!!(formik.touched.summary && formik.errors.summary)}
@@ -189,28 +232,13 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
                 <Typography variant="h6">Notes</Typography>
               </Grid>
               <Grid size={{ xs: 12, md: 8 }}>
-                <TextField
-                  defaultValue={formik.values.notes}
-                  error={!!(formik.touched.notes && formik.errors.notes)}
-                  fullWidth
-                  helperText={formik.touched.notes && formik.errors.notes}
-                  name="notes"
-                  onBlur={formik.handleBlur}
+                <QuillEditor
                   onChange={handleNotesChange}
                   placeholder="Write something..."
-                  multiline
-                  rows={8}
-                />
-              </Grid>
-
-              {/* <PlateEditor
-                  onChange={(value) => {
-                    formik.setFieldValue("notes", value);
-                  }}
-                  placeholder="Write something"
                   sx={{ height: 400 }}
                   value={formik.values.notes}
-                /> */}
+                />
+              </Grid>
             </Grid>
           </CardContent>
         </Card>
@@ -222,12 +250,14 @@ export const BookEditForm: FC<BookEditFormProps> = (props) => {
         >
           <Button
             color="inherit"
+            disabled={formik.isSubmitting}
             href={`/books/${bookId}`}
             LinkComponent={RouterLink}
           >
             Cancel
           </Button>
           <Button
+            disabled={!formik.dirty || formik.isSubmitting}
             loading={formik.isSubmitting}
             type="submit"
             variant="contained"

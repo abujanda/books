@@ -4,6 +4,7 @@ import {
   deleteBook,
   getBook,
   getBooks,
+  searchBooks,
   updateBook,
 } from "../controllers/bookController";
 import { authMiddleware } from "../middleware/authMiddleware";
@@ -17,6 +18,7 @@ const router = express.Router();
 // router.put("/:id", authMiddleware, updateBook); // Update a book by ID
 
 router.get("/", getBooks);
+router.get("/search", searchBooks); // Assuming you want to search books
 router.post("/create", createBook);
 router.get("/:id", getBook); // Assuming you want to get a book by ID
 router.delete("/:id", deleteBook);

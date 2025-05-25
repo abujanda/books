@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { UserDto } from "../dtos/userDto";
+import type { UserDto } from "../dtos/auth/userDto";
 import { generateAccessToken } from "../utils/jwt";
 
 export interface IUser extends Document {

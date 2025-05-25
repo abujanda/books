@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import Image from "next/image";
 import { Typography, Link, Card, CardContent, Stack } from "@mui/material";
+import { BookCover } from "./book-cover";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookPreviewProps {
@@ -23,12 +23,7 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
     <Card raised>
       <CardContent sx={{ p: 4 }}>
         <Stack direction="row" spacing={2}>
-          <Image
-            src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
-            alt={title}
-            width={150}
-            height={200}
-          />
+          <BookCover height={200} isbn={isbn} title={title} width={150} />
           <div>
             <Typography
               variant="h5"
@@ -47,7 +42,7 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
               >
                 Date read: {formattedReadDate}.
               </Typography>
-              {rating && (
+              {rating !== undefined && (
                 <Typography
                   color="text.secondary"
                   fontStyle="italic"
