@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useState } from "react";
 import {
   Box,
@@ -14,6 +12,7 @@ import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
+import { Layout as BooksLayout } from "@/layouts/books";
 import { paths } from "@/paths";
 import { BookCreateForm } from "@/sections/book/book-create-form";
 import type { Page as PageType } from "@/types/page";
@@ -91,5 +90,11 @@ const Page: PageType = () => {
     </>
   );
 };
+
+Page.getLayout = (page) => (
+    <BooksLayout>
+        {page}
+    </BooksLayout>
+);
 
 export default Page;

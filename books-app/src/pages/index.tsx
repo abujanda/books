@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useState } from "react";
 import { NextPage } from "next";
 import { Add as PlusIcon } from "@mui/icons-material";
@@ -16,6 +14,7 @@ import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
+import { Layout as BooksLayout } from "@/layouts/books";
 import { paths } from "@/paths";
 import { BookPreview } from "@/sections/book/book-preview";
 import { Book } from "@/types/book";
@@ -147,5 +146,11 @@ const Page: NextPage = () => {
     </>
   );
 };
+
+Page.getLayout = (page) => (
+  <BooksLayout>
+    {page}
+  </BooksLayout>
+);
 
 export default Page;

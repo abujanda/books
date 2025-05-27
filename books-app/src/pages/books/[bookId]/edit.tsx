@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useState } from "react";
 import { notFound, useParams } from "next/navigation";
 import {
@@ -13,6 +11,7 @@ import {
 import { bookApi } from "@/api/book-api";
 import { tagApi } from "@/api/tag-api";
 import { BreadcrumbsSeparator } from "@/components/breadcrumbs-separator";
+import { Layout as BooksLayout } from "@/layouts/books";
 import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
@@ -144,5 +143,11 @@ const Page: PageType = () => {
     </>
   );
 };
+
+Page.getLayout = (page) => (
+    <BooksLayout>
+        {page}
+    </BooksLayout>
+);
 
 export default Page;
