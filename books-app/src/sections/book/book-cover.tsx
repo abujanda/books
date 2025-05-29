@@ -46,7 +46,11 @@ export const BookCover: FC<BookCoverProps> = (props) => {
       onError={(e) => {
         setImageError(true);
       }}
-      style={{ display: isbn ? "block" : "none" }}
+      style={{
+        display: isbn ? "block" : "none",
+        width: "auto",
+        height: "auto",
+      }}
     />
   );
 };

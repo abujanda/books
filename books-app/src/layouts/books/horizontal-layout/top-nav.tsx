@@ -112,7 +112,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
                     },
                   }}
                 >
-                  Notes <span>App</span>
+                  Book <span>Notes</span> App
                 </Box>
               )}
             </Stack>

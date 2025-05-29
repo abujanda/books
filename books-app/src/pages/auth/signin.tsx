@@ -8,7 +8,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { Layout as AuthLayout } from "../../layouts/auth/classic-layout";
+import { Layout as AuthLayout } from "@/layouts/auth/classic-layout";
 import { paths } from "../../paths";
 import { GuestGuard } from "../../guards/guest-guard";
 import { JWTLogin } from "@/sections/auth/jwt-login";
@@ -26,7 +26,7 @@ const Page: NextPage = () => {
               <Typography color="text.secondary" variant="body2">
                 Don&apos;t have an account? &nbsp;
                 <Link
-                  //href={paths.auth.signup}
+                  href={paths.auth.signup}
                   underline="hover"
                   variant="subtitle2"
                 >

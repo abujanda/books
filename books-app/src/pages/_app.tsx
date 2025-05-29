@@ -31,34 +31,34 @@ const App = (props: AppProps) => {
         <title>Book Notes App</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ReduxProvider store={store}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider>
-            <AuthConsumer>
-              {(auth) => {
-                const showLoading = !auth.isInitialized;
+      {/* <ReduxProvider store={store}> */}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <AuthProvider>
+          <AuthConsumer>
+            {(auth) => {
+              const showLoading = !auth.isInitialized;
 
-                const theme = createTheme({
-                  colorPreset: DEFAULT_COLOR_PRESET,
-                  contrast: DEFAULT_CONTRAST,
-                });
+              const theme = createTheme({
+                colorPreset: DEFAULT_COLOR_PRESET,
+                contrast: DEFAULT_CONTRAST,
+              });
 
-                return (
-                  <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    {showLoading ? (
-                      <LoadingBackdrop />
-                    ) : (
-                      getLayout(<Component {...pageProps} />)
-                    )}
-                    <Toaster />
-                  </ThemeProvider>
-                );
-              }}
-            </AuthConsumer>
-          </AuthProvider>
-        </LocalizationProvider>
-      </ReduxProvider>
+              return (
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  {showLoading ? (
+                    <LoadingBackdrop />
+                  ) : (
+                    getLayout(<Component {...pageProps} />)
+                  )}
+                  <Toaster />
+                </ThemeProvider>
+              );
+            }}
+          </AuthConsumer>
+        </AuthProvider>
+      </LocalizationProvider>
+      {/* </ReduxProvider> */}
     </CacheProvider>
   );
 };

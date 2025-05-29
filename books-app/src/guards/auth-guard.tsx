@@ -11,19 +11,18 @@ interface AuthGuardProps {
 export const AuthGuard: FC<AuthGuardProps> = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [checked, setChecked] = useState<boolean>(false);
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(
-    null
-  );
 
   const check = useCallback(() => {
     if (!isAuthenticated) {
       const searchParams = new URLSearchParams({
         returnTo: window.location.href,
       }).toString();
-      const href = paths.auth.signIn + `?${searchParams}`;
+      const href = paths.auth.signin + `?${searchParams}`;
       router.replace(href);
+    } else {
+      setChecked(true);
     }
   }, [isAuthenticated, router]);
 

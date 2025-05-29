@@ -4,8 +4,8 @@ export const paths = {
         index: "/account"
     },
     auth: {
-        signIn: "/auth/sign-in",
-        signUp: "/auth/sign-up",
+        signin: "/auth/signin",
+        signup: "/auth/signup",
         verifyEmail: {
             index: "/auth/verify-email",
         },

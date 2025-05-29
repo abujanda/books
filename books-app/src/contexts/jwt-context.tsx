@@ -1,12 +1,9 @@
-import { createContext, useEffect, useReducer } from "react";
 import type { FC, ReactNode } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { authApi } from "../api/auth-api";
 import type { User } from "../types/user";
-import type {
-  SignInOptions,
-  SignUpOptions,
-} from "../types/auth";
+import type { SignInOptions, SignUpOptions } from "../types/auth";
 import axios from "../utils/axios";
 
 const STORAGE_KEY = "at";
@@ -89,7 +86,7 @@ const initialState: State = {
 const handlers: Record<ActionType, Handler> = {
   INITIALIZE: (state: State, action: InitializeAction): State => {
     //const { isAuthenticated, isTwoFactorAuthenticated, user } = action.payload;
-    const {isAuthenticated, user} = action.payload;
+    const { isAuthenticated, user } = action.payload;
 
     return {
       ...state,
@@ -149,52 +146,40 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    const initialize = async (): Promise<void> => {
-      try {
-        const accessToken = globalThis.localStorage.getItem(STORAGE_KEY);
+  const initialize = useCallback(async (): Promise<void> => {
+    try {
+      const accessToken = globalThis.localStorage.getItem(STORAGE_KEY);
 
-        if (accessToken && isTokenValid(accessToken)) {
-          setSession(accessToken);
+      if (accessToken && isTokenValid(accessToken)) {
+        setSession(accessToken);
 
-          const user = await authApi.me();
+        const user = await authApi.me();
 
-          dispatch(
-            // user?.isLockedOut
-            //   ? {
-            //       type: ActionType.INITIALIZE,
-            //       payload: {
-            //         isAuthenticated: false,
-            //        // isTwoFactorAuthenticated: false,
-            //         user: null,
-            //       },
-            //     }
-            //   : 
-              {
-                  type: ActionType.INITIALIZE,
-                  payload: {
-                    isAuthenticated: true,
-                    //isTwoFactorAuthenticated: true,
-                    user,
-                  },
-                }
-          );
-
-          // if (user?.isLockedOut) {
-          //   setSession(null);
-          // }
-        } else {
-          dispatch({
+        dispatch(
+          // user?.isLockedOut
+          //   ? {
+          //       type: ActionType.INITIALIZE,
+          //       payload: {
+          //         isAuthenticated: false,
+          //        // isTwoFactorAuthenticated: false,
+          //         user: null,
+          //       },
+          //     }
+          //   :
+          {
             type: ActionType.INITIALIZE,
             payload: {
-              isAuthenticated: false,
-              //isTwoFactorAuthenticated: false,
-              user: null,
+              isAuthenticated: true,
+              //isTwoFactorAuthenticated: true,
+              user,
             },
-          });
-        }
-      } catch (err) {
-        console.error(err);
+          }
+        );
+
+        // if (user?.isLockedOut) {
+        //   setSession(null);
+        // }
+      } else {
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
@@ -204,8 +189,20 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           },
         });
       }
-    };
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ActionType.INITIALIZE,
+        payload: {
+          isAuthenticated: false,
+          //isTwoFactorAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  }, [dispatch]);
 
+  useEffect(() => {
     initialize();
   }, []);
 
@@ -259,53 +256,59 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     }
   };
 
-  const signIn = async (options: SignInOptions): Promise<void> => {
-    const user = await authApi.signIn(options);
-    const { accessToken } = user;
+  const signIn = useCallback(
+    async (options: SignInOptions): Promise<void> => {
+      const user = await authApi.signIn(options);
+      const { accessToken } = user;
 
-    setSession(accessToken);
+      setSession(accessToken);
 
-    dispatch({
-      type: ActionType.LOGIN,
-      payload: {
-        user,
-      },
-    });
-  };
+      dispatch({
+        type: ActionType.LOGIN,
+        payload: {
+          user,
+        },
+      });
+    },
+    [dispatch]
+  );
 
-  const signOut = async (): Promise<void> => {
+  const signUp = useCallback(
+    async (options: SignUpOptions) => {
+      const user = await authApi.signUp(options);
+      const { accessToken } = user;
+
+      globalThis.localStorage.setItem(STORAGE_KEY, accessToken);
+
+      dispatch({
+        type: ActionType.REGISTER,
+        payload: {
+          user: user,
+        },
+      });
+    },
+    [dispatch]
+  );
+
+  const signOut = useCallback(async (): Promise<void> => {
     return new Promise(() => {
       setTimeout(() => {
         setSession(null);
         dispatch({ type: ActionType.LOGOUT });
       }, 0);
     });
-  };
+  }, [dispatch]);
 
-  const signUp = async (options: SignUpOptions) => {
-    const user = await authApi.signUp(options);
-    const { accessToken } = user;
+  //   const twoFactorAuthenticate = async (options: TwoFactorOptions) => {
+  //     const user = await authApi.verifyTwoFactorAuthentication(options);
+  //     const { accessToken } = user;
 
-    globalThis.localStorage.setItem(STORAGE_KEY, accessToken);
+  //     setSession(accessToken);
 
-    dispatch({
-      type: ActionType.REGISTER,
-      payload: {
-        user: user,
-      },
-    });
-  };
-
-//   const twoFactorAuthenticate = async (options: TwoFactorOptions) => {
-//     const user = await authApi.verifyTwoFactorAuthentication(options);
-//     const { accessToken } = user;
-
-//     setSession(accessToken);
-
-//     dispatch({
-//       type: ActionType.TWOFACTOR,
-//     });
-//   };
+  //     dispatch({
+  //       type: ActionType.TWOFACTOR,
+  //     });
+  //   };
 
   return (
     <AuthContext.Provider

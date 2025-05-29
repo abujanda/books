@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { LoadingButton } from "@mui/lab";
 import {
+  Button,
   FormHelperText,
   Link,
   Stack,
@@ -77,73 +77,75 @@ export const JWTRegister: FC = () => {
   });
 
   return (
-    <form noValidate onSubmit={formik.handleSubmit}>
-      <Stack spacing={3}>
-        <TextField
-          error={Boolean(formik.touched.email && formik.errors.email)}
+    <>
+      <form noValidate onSubmit={formik.handleSubmit}>
+        <Stack spacing={3}>
+          <TextField
+            error={Boolean(formik.touched.email && formik.errors.email)}
+            fullWidth
+            helperText={formik.touched.email && formik.errors.email}
+            label="Email address"
+            name="email"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            size="small"
+            value={formik.values.email}
+          />
+          <TextField
+            error={Boolean(formik.touched.name && formik.errors.name)}
+            fullWidth
+            helperText={formik.touched.name && formik.errors.name}
+            label="Full name"
+            name="name"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            size="small"
+            value={formik.values.name}
+          />
+          <TextField
+            error={Boolean(formik.touched.company && formik.errors.company)}
+            fullWidth
+            helperText={formik.touched.company && formik.errors.company}
+            label="Company (optional)"
+            name="company"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            size="small"
+            value={formik.values.company}
+          />
+          <PasswordField
+            error={Boolean(formik.touched.password && formik.errors.password)}
+            fullWidth
+            helperText={formik.touched.password && formik.errors.password}
+            label="Password"
+            name="password"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            size="small"
+            value={formik.values.password}
+          />
+          <Typography color="text.secondary" variant="caption">
+            By signing up, I accept the the{" "}
+            <Link href="#">Terms of Service</Link> and acknowledge the{" "}
+            <Link href="#">Privacy Policy</Link>.
+          </Typography>
+          {formik.errors.submit && (
+            <FormHelperText error>{formik.errors.submit}</FormHelperText>
+          )}
+        </Stack>
+        <Button
+          color="primary"
+          disabled={formik.isSubmitting}
           fullWidth
-          helperText={formik.touched.email && formik.errors.email}
-          label="Email address"
-          name="email"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          loading={formik.isSubmitting}
           size="small"
-          value={formik.values.email}
-        />
-        <TextField
-          error={Boolean(formik.touched.name && formik.errors.name)}
-          fullWidth
-          helperText={formik.touched.name && formik.errors.name}
-          label="Full name"
-          name="name"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
-          size="small"
-          value={formik.values.name}
-        />
-        <TextField
-          error={Boolean(formik.touched.company && formik.errors.company)}
-          fullWidth
-          helperText={formik.touched.company && formik.errors.company}
-          label="Company (optional)"
-          name="company"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
-          size="small"
-          value={formik.values.company}
-        />
-        <PasswordField
-          error={Boolean(formik.touched.password && formik.errors.password)}
-          fullWidth
-          helperText={formik.touched.password && formik.errors.password}
-          label="Password"
-          name="password"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
-          size="small"
-          value={formik.values.password}
-        />
-        <Typography color="text.secondary" variant="caption">
-          By signing up, I accept the the{" "}
-          <Link href="#">Terms of Service</Link> and acknowledge
-          the <Link href="#">Privacy Policy</Link>.
-        </Typography>
-        {formik.errors.submit && (
-          <FormHelperText error>{formik.errors.submit}</FormHelperText>
-        )}
-      </Stack>
-      <LoadingButton
-        color="primary"
-        disabled={formik.isSubmitting}
-        fullWidth
-        loading={formik.isSubmitting}
-        size="small"
-        sx={{ mt: 2 }}
-        type="submit"
-        variant="contained"
-      >
-        Create
-      </LoadingButton>
-    </form>
+          sx={{ mt: 2 }}
+          type="submit"
+          variant="contained"
+        >
+          Create
+        </Button>
+      </form>
+    </>
   );
 };

@@ -22,7 +22,7 @@ export const Logo: FC = () => {
         x2="11.2"
         y2="8"
         stroke="#D8B4FE"
-        stroke-width="0.6"
+        strokeWidth="0.6"
       />
       <line
         x1="7.2"
@@ -30,7 +30,7 @@ export const Logo: FC = () => {
         x2="11.2"
         y2="9.6"
         stroke="#D8B4FE"
-        stroke-width="0.6"
+        strokeWidth="0.6"
       />
       <line
         x1="7.2"
@@ -38,7 +38,7 @@ export const Logo: FC = () => {
         x2="10.7"
         y2="11.2"
         stroke="#D8B4FE"
-        stroke-width="0.6"
+        strokeWidth="0.6"
       />
 
       <polygon points="13,15 16,12 16.6,12.6 13.6,15.6" fill="#F59E0B" />
