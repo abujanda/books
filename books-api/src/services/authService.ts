@@ -20,19 +20,21 @@ passwordSchema
   .not()
   .spaces(); // Should not have spaces
 
-type MeRequestResponse = Promise<{ user: UserDto } | null>;
+type MeRequestResponse = Promise<UserDto | null>;
 
-type SignInResponse = Promise<{ user: UserDto } | null>;
+type SignInResponse = Promise<UserDto | null>;
 
-type SignUpResponse = Promise<{ user: UserDto }>;
+type SignUpResponse = Promise<UserDto>;
 
-export const getUserProfile = async (userId: string): Promise<IUser | null> => {
+export const getUserProfile = async (
+  userId: string
+): Promise<UserDto | null> => {
   try {
     const user = await User.findById(userId);
     if (!user) {
       throw new Error("User not found");
     }
-    return user;
+    return user.toDataTransferObject(); //TODO: May want to return profile related info.
   } catch (error: any) {
     throw new Error("Error fetching user profile: " + error.message);
   }
@@ -56,9 +58,7 @@ export const signInUser = async (
       throw new Error("Incorrect email address or password.");
     }
 
-    return {
-      user: existingUser.toDataTransferObject(),
-    };
+    return existingUser.toDataTransferObject();
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -90,7 +90,7 @@ export const signUpUser = async (userData: IUser): SignUpResponse => {
 
     await newUser.save();
 
-    return { user: newUser.toDataTransferObject() };
+    return newUser.toDataTransferObject();
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -103,11 +103,12 @@ export const me = async (userId: string): MeRequestResponse => {
     }
 
     const user = await User.findById(userId);
+
     if (!user) {
       throw new Error("Invalid authorization token.");
     }
 
-    return { user: user.toDataTransferObject() };
+    return user.toDataTransferObject();
   } catch (error: any) {
     throw new Error("Error fetching current user: " + error.message);
   }
