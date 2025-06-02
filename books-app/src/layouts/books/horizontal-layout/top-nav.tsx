@@ -112,7 +112,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
                     },
                   }}
                 >
-                  Notes <span>App</span>
+                  Book <span>Notes</span> App
                 </Box>
               )}
             </Stack>
@@ -124,7 +124,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
               sx={{ flexGrow: 1 }}
             >
               <SearchButton />
-              {/* <AccountButton /> */}
+              <AccountButton />
             </Stack>
           </Stack>
         </Stack>

@@ -2,13 +2,17 @@ import mongoose, { Schema, Document } from "mongoose";
 import type { UserDto } from "../dtos/auth/userDto";
 import { generateAccessToken } from "../utils/jwt";
 
+type ToDataTransferObjectOptions = {
+  staySignedIn?: boolean;
+};
+
 export interface IUser extends Document {
   email: string;
   emailConfirmed: boolean;
   name: string;
   password: string;
 
-  toDataTransferObject(): UserDto;
+  toDataTransferObject(options?: ToDataTransferObjectOptions): UserDto;
 }
 
 const UserSchema: Schema = new Schema(
@@ -21,9 +25,12 @@ const UserSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.methods.toDataTransferObject = function (): UserDto {
+UserSchema.methods.toDataTransferObject = function (
+  options?: ToDataTransferObjectOptions
+): UserDto {
   return {
-    accessToken: generateAccessToken(this._id),
+    id: this._id,
+    accessToken: generateAccessToken(this._id, options),
     email: this.email,
     emailConfirmed: this.emailConfirmed,
     name: this.name,

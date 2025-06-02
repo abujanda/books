@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Typography, Link, Card, CardContent, Stack } from "@mui/material";
-import { BookCover } from "./book-cover";
+import { BookCover } from "../book-cover";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookPreviewProps {
@@ -23,7 +23,7 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
     <Card raised>
       <CardContent sx={{ p: 4 }}>
         <Stack direction="row" spacing={2}>
-          <BookCover height={200} isbn={isbn} title={title} width={150} />
+          <BookCover height={150} isbn={isbn} title={title} width={100} />
           <div>
             <Typography
               variant="h5"

@@ -1,4 +1,3 @@
-"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { notFound, useParams } from "next/navigation";
@@ -16,6 +15,7 @@ import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
 import { useMounted } from "@/hooks/use-mounted";
+import { Layout as BooksLayout } from "@/layouts/books";
 import { paths } from "@/paths";
 import { BookActionsButton } from "@/sections/book/book-actions-button";
 import { BookDeleteDialog } from "@/sections/book/book-delete-dialog";
@@ -134,5 +134,11 @@ const Page: PageType = () => {
     </>
   );
 };
+
+Page.getLayout = (page) => (
+    <BooksLayout>
+        {page}
+    </BooksLayout>
+);
 
 export default Page;

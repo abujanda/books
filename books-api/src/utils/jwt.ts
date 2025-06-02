@@ -16,12 +16,18 @@ export const authenticateToken = (token: string): string | JwtPayload => {
   }
 };
 
-export const generateAccessToken = (userId: string): string => {
+export const generateAccessToken = (
+  userId: string,
+  options?: { staySignedIn?: boolean }
+): string => {
+  const { staySignedIn } = options ?? {};
+  const numOfDays = staySignedIn ? 7 : 1;
+
   return sign(
     { userId, iat: Math.floor(Date.now() / 1000) },
     jwtConfig.secret,
     {
-      expiresIn: JWT_EXPIRES_IN,
+      expiresIn: JWT_EXPIRES_IN * numOfDays,
     }
   );
 };
