@@ -13,23 +13,25 @@ import { bookApi } from "@/api/book-api";
 import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { RouterLink } from "@/components/router-link";
 import { Seo } from "@/components/seo";
+import { useAuth } from "@/hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
 import { Layout as BooksLayout } from "@/layouts/books";
 import { paths } from "@/paths";
-import { BookPreview } from "@/sections/book/book-preview";
+import { BookPreviewList } from "@/sections/book/book-preview-list";
+import { BookPreview } from "@/sections/book/book-preview-list/book-preview";
 import { Book } from "@/types/book";
 
 // https://sive.rs/book
 
 const useBooks = () => {
   const isMounted = useMounted();
+  const { user } = useAuth();
   const [state, setState] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchBooks = useCallback(async () => {
     try {
-      // TODO: Replace with authentication info
-      const books = await bookApi.getBooks("67edaebdcafe04054f9b64ed");
+      const books = await bookApi.getBooks(user!.id);
 
       if (isMounted()) {
         setState(books);
@@ -62,7 +64,7 @@ const Page: NextPage = () => {
         <Container maxWidth="lg">
           <Stack spacing={4}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Typography variant="h4">Notes</Typography>
+              <Typography variant="h4">Book Notes</Typography>
               <Stack alignItems="center" direction="row" spacing={3}>
                 <Button
                   color="primary"
@@ -79,21 +81,7 @@ const Page: NextPage = () => {
                 </Button>
               </Stack>
             </Stack>
-
-            <Stack spacing={3}>
-              {state.map((book, index) => (
-                <BookPreview
-                  key={index}
-                  id={book.id}
-                  isbn={book.isbn}
-                  notes={book.notes}
-                  rating={book.rating}
-                  readDate={book.readDate}
-                  summary={book.summary}
-                  title={book.title}
-                />
-              ))}
-            </Stack>
+            <BookPreviewList books={state} />
           </Stack>
         </Container>
       </Box>
@@ -147,10 +135,6 @@ const Page: NextPage = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <BooksLayout>
-    {page}
-  </BooksLayout>
-);
+Page.getLayout = (page) => <BooksLayout>{page}</BooksLayout>;
 
 export default Page;

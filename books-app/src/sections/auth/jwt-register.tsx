@@ -10,47 +10,67 @@ import {
   Typography,
 } from "@mui/material";
 import { AuthConfig } from "./config";
-import { PasswordField } from "../../components/password-field";
-import { useAuth } from "../../hooks/use-auth";
-import { useMounted } from "../../hooks/use-mounted";
-import type { SignUpOptions } from "../../types/auth";
+import { PasswordField } from "@/components/password-field";
+import { useAuth } from "@/hooks/use-auth";
+import { useMounted } from "@/hooks/use-mounted";
+import { useSearchParams } from "@/hooks/use-search-params";
+import { paths } from "@/paths";
+import type { SignUpOptions } from "@/types/auth";
+
+interface Values {
+  email: string;
+  name: string;
+  password: string;
+  submit: null;
+}
+
+// const initialValues : Values = {
+//   email: "",
+//   name: "",
+//   password: "",
+//   submit: null,
+// };
+
+const initialValues : Values = {
+  email: "john.doe@testing.com",
+  name: "John Doe",
+  password: "Pa$$w0rd",
+  submit: null,
+};
+
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address.")
+    .max(255)
+    .required("This information is required."),
+  name: Yup.string().max(255).required("This information is required."),
+  password: Yup.string()
+    .required("This information is required")
+    .test(
+      "password",
+      "Password must contain at least 8 characters and combine uppercase letters, lowercase letters, numbers, and symbols.",
+      (value) => {
+        if (!value) {
+          return false;
+        }
+
+        if (!AuthConfig.passwordRegex.test(value)) {
+          return false; // Validation failed
+        }
+
+        return true; // Validation succeeded
+      }
+    ),
+});
 
 export const JWTRegister: FC = () => {
   const isMounted = useMounted();
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get("returnTo");
   const { signUp } = useAuth();
   const formik = useFormik({
-    initialValues: {
-      company: "",
-      email: "",
-      name: "",
-      password: "",
-      submit: null,
-    },
-    validationSchema: Yup.object({
-      company: Yup.string().max(255).nullable(),
-      email: Yup.string()
-        .email("Invalid email address.")
-        .max(255)
-        .required("This information is required."),
-      name: Yup.string().max(255).required("This information is required."),
-      password: Yup.string()
-        .required("This information is required")
-        .test(
-          "password",
-          "Password must contain at least 8 characters and combine uppercase letters, lowercase letters, numbers, and symbols.",
-          (value) => {
-            if (!value) {
-              return false;
-            }
-
-            if (!AuthConfig.passwordRegex.test(value)) {
-              return false; // Validation failed
-            }
-
-            return true; // Validation succeeded
-          }
-        ),
-    }),
+    initialValues,
+    validationSchema,
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         const options: SignUpOptions = {
@@ -64,12 +84,14 @@ export const JWTRegister: FC = () => {
         if (isMounted()) {
           helpers.setStatus({ success: true });
           helpers.setSubmitting(false);
+
+          window.location.href = returnTo || paths.index;
         }
       } catch (err: any) {
         console.error(err);
         if (isMounted()) {
           helpers.setStatus({ success: false });
-          helpers.setErrors({ submit: err.data });
+          helpers.setErrors({ submit: err.data.message });
           helpers.setSubmitting(false);
         }
       }
@@ -102,7 +124,7 @@ export const JWTRegister: FC = () => {
             size="small"
             value={formik.values.name}
           />
-          <TextField
+          {/* <TextField
             error={Boolean(formik.touched.company && formik.errors.company)}
             fullWidth
             helperText={formik.touched.company && formik.errors.company}
@@ -112,7 +134,7 @@ export const JWTRegister: FC = () => {
             onChange={formik.handleChange}
             size="small"
             value={formik.values.company}
-          />
+          /> */}
           <PasswordField
             error={Boolean(formik.touched.password && formik.errors.password)}
             fullWidth

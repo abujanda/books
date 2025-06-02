@@ -44,13 +44,17 @@ export const JWTLogin: FC = (props) => {
   const { signIn } = useAuth();
   const isMounted = useMounted();
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo');
+  const returnTo = searchParams.get("returnTo");
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        const options = values as SignInOptions;
+        const options: SignInOptions = {
+          email: values.email,
+          password: values.password,
+          staySignedIn: values.staySignedIn,
+        };
 
         await signIn(options);
 
@@ -64,7 +68,7 @@ export const JWTLogin: FC = (props) => {
         console.error(err);
         if (isMounted()) {
           helpers.setStatus({ success: false });
-          helpers.setErrors({ submit: err.data });
+          helpers.setErrors({ submit: err.data.message });
           helpers.setSubmitting(false);
         }
       }

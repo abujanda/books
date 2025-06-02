@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Typography, Link, Card, CardContent, Stack } from "@mui/material";
-import { BookCover } from "./book-cover";
+import { BookCover } from "../book-cover";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookPreviewProps {
