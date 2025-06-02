@@ -1,8 +1,11 @@
 import bcrypt from "bcrypt";
+import createError from "http-errors";
 import PasswordValidator from "password-validator";
 import validator from "validator";
+import { SignInOptionsDto } from "../dtos/auth/options/signInOptionsDto";
+import { SignUpOptionsDto } from "../dtos/auth/options/signUpOptionsDto";
 import type { UserDto } from "../dtos/auth/userDto";
-import User, { IUser } from "../models/userModel";
+import User from "../models/userModel";
 
 const passwordSchema = new PasswordValidator();
 passwordSchema
@@ -36,53 +39,60 @@ export const getUserProfile = async (
     }
     return user.toDataTransferObject(); //TODO: May want to return profile related info.
   } catch (error: any) {
+    console.error(error);
     throw new Error("Error fetching user profile: " + error.message);
   }
 };
 
-export const signInUser = async (
-  email: string,
-  password: string
-): SignInResponse => {
+export const signInUser = async (options: SignInOptionsDto): SignInResponse => {
   try {
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: options.email });
 
     if (!existingUser) {
-      throw new Error("Incorrect email address or password.");
+      return null;
     }
 
     // Compare the provided password with the stored hashed password
-    const isMatch = await bcrypt.compare(password, existingUser.password);
+    const isMatch = await bcrypt.compare(
+      options.password,
+      existingUser.password
+    );
 
     if (!isMatch) {
-      throw new Error("Incorrect email address or password.");
+      return null;
     }
 
-    return existingUser.toDataTransferObject();
+    return existingUser.toDataTransferObject({
+      staySignedIn: options.staySignedIn,
+    });
   } catch (error: any) {
+    console.error(error);
     throw new Error(error.message);
   }
 };
 
-export const signUpUser = async (userData: IUser): SignUpResponse => {
+export const signUpUser = async (options: SignUpOptionsDto): SignUpResponse => {
+  // Validate email format
+  if (!validator.isEmail(options.email)) {
+    throw createError(400, "Please provide a valid email address.");
+  }
+
+  // Check if a user with the given email already exists
+  const existingUser = await User.findOne({ email: options.email });
+  if (existingUser) {
+    throw createError(400, "Email already exists.");
+  }
+
+  if (!passwordSchema.validate(options.password)) {
+    throw createError(
+      400,
+      "Password does not meet the complexity requirements."
+    );
+  }
+
   try {
-    // Validate email format
-    if (!validator.isEmail(userData.email)) {
-      throw new Error("Please provide a valid email address.");
-    }
-
-    // Check if a user with the given email already exists
-    const existingUser = await User.findOne({ email: userData.email });
-    if (existingUser) {
-      throw new Error("Email already exists.");
-    }
-
-    if (!passwordSchema.validate(userData.password)) {
-      throw new Error("Password does not meet the complexity requirements.");
-    }
-
     const newUser = new User({
-      ...userData,
+      ...options,
     });
     // Hash password for security
     const saltRounds = 10;
@@ -110,6 +120,7 @@ export const me = async (userId: string): MeRequestResponse => {
 
     return user.toDataTransferObject();
   } catch (error: any) {
+    console.error(error);
     throw new Error("Error fetching current user: " + error.message);
   }
 };
