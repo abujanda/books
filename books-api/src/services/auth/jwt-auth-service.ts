@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import createError from "http-errors";
 import PasswordValidator from "password-validator";
 import validator from "validator";
-import { SignInOptionsDto } from "../dtos/auth/options/signInOptionsDto";
-import { SignUpOptionsDto } from "../dtos/auth/options/signUpOptionsDto";
-import type { UserDto } from "../dtos/auth/userDto";
-import User from "../models/userModel";
+import { SignInOptionsDto } from "../../dtos/auth/options/signin-options-dto";
+import { SignUpOptionsDto } from "../../dtos/auth/options/signup-options-dto";
+import type { UserDto } from "../../dtos/auth/user-dto";
+import User from "../../models/user-model";
 
 const passwordSchema = new PasswordValidator();
 passwordSchema

@@ -1,8 +1,8 @@
-import Book from "../models/bookModel";
-import Tag from "../models/tagModel";
-import { BookDto } from "../dtos/book/bookDto";
-import { CreateBookOptionsDto } from "../dtos/book/options/createBookOptionsDto";
-import { UpdateBookOptionsDto } from "../dtos/book/options/updateBookOptionsDto";
+import Book from "../models/book-model";
+import Tag from "../models/tag-model";
+import { BookDto } from "../dtos/book/book-dto";
+import { CreateBookOptionsDto } from "../dtos/book/options/create-book-options-dto";
+import { UpdateBookOptionsDto } from "../dtos/book/options/update-book-options-dto";
 import { convertHtmlToText } from "../utils/html-to-text";
 import { sanitizeHTML } from "../utils/sanitize-html";
 

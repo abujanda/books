@@ -1,4 +1,4 @@
-import { IBookDto } from "../bookDto";
+import { IBookDto } from "../book-dto";
 
 interface IUpdateBookOptionsDto extends Omit<IBookDto, "id" | "userId"> {}
 

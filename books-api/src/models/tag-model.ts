@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { TagDto } from "../dtos/tag/tagDto";
+import { TagDto } from "../dtos/tag/tag-dto";
 
 export interface ITag extends Document {
   name: { type: String; required: true; unique: true };

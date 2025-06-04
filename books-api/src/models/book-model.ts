@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { BookDto } from "../dtos/book/bookDto";
-import { ITag } from "./tagModel";
+import { BookDto } from "../dtos/book/book-dto";
+import { ITag } from "./tag-model";
 
 export interface IBook extends Document {
   isbn: string;

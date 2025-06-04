@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { UserDto } from "../dtos/auth/userDto";
+import type { UserDto } from "../dtos/auth/user-dto";
 import { generateAccessToken } from "../utils/jwt";
 
 type ToDataTransferObjectOptions = {
@@ -9,6 +9,7 @@ type ToDataTransferObjectOptions = {
 export interface IUser extends Document {
   email: string;
   emailConfirmed: boolean;
+  firebaseUid?: string; // (Optional) For Firebase authentication
   name: string;
   password: string;
 
@@ -19,6 +20,7 @@ const UserSchema: Schema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     emailConfirmed: { type: Boolean, default: false },
+    firebaseUid: {type: String, unique: true, sparse: true}, // For Firebase authentication
     name: { type: String, required: true },
     password: { type: String, required: true },
   },

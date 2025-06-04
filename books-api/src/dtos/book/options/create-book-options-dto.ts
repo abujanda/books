@@ -1,4 +1,4 @@
-import { IBookDto } from "../bookDto";
+import { IBookDto } from "../book-dto";
 
 interface ICreateBookOptionsDto extends Omit<IBookDto, "id"> {}
 

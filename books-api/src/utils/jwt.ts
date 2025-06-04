@@ -9,8 +9,8 @@ export const authenticateToken = (token: string): string | JwtPayload => {
   }
 
   try {
-    const decoded = verify(token, jwtConfig.secret) as JwtPayload;
-    return decoded;
+    const decodedToken = verify(token, jwtConfig.secret) as JwtPayload;
+    return decodedToken;
   } catch (error) {
     throw new Error("Invalid token");
   }

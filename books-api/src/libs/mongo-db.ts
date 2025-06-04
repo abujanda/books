@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { dbConfig } from "../config";
 
-const connectDB = async () => {
+const connectMongoDb = async () => {
   try {
     if (!dbConfig.mongo_uri) {
       throw new Error("Add Mongo URI to .env");
@@ -15,4 +15,4 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;
+export default connectMongoDb;

@@ -1,17 +1,17 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectDB from "./config/db";
-import authRoutes from "./routes/authRoutes";
-import bookRoutes from "./routes/bookRoutes";
-import tagRoutes from "./routes/tagRoutes";
+import connectMongoDb from "./libs/mongo-db";
+import authRoutes from "./routes/auth-routes";
+import bookRoutes from "./routes/book-routes";
+import tagRoutes from "./routes/tag-routes";
 import seedTags from "./seeds/tags";
 
 dotenv.config();
 const app = express();
 
 // Connect to MongoDB
-connectDB().then(() => {
+connectMongoDb().then(() => {
   seedTags();
 });
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as authService from "../services/authService";
+import * as authService from "../services/auth/jwt-auth-service";
 
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
