@@ -9,7 +9,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { SplashScreen } from "@/components/splash-screen";
 import { Toaster } from "../components/toaster";
-import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
+import { AuthConsumer, AuthProvider } from "../contexts/auth";
 import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";

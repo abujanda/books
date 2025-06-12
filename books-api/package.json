@@ -17,6 +17,7 @@
     "dompurify": "^3.2.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "firebase-admin": "^13.4.0",
     "html-to-text": "^9.0.5",
     "http-errors": "^2.0.0",
     "jsdom": "^26.1.0",

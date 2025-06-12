@@ -1,5 +1,5 @@
 import { tags } from "./data";
-import Tag from "../../models/tagModel";
+import Tag from "../../models/tag-model";
 
 const seedTags = () => {
   return new Promise(async (resolve, reject) => {
