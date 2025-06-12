@@ -19,7 +19,7 @@ export interface IBook extends Document {
 
 const BookSchema: Schema = new mongoose.Schema(
   {
-    isbn: { type: String, required: true, unique: true },
+    isbn: { type: String, required: true },
     notes: {
       html: { type: String, default: null },
       plain: { type: String, default: null },
@@ -44,7 +44,6 @@ const BookSchema: Schema = new mongoose.Schema(
 );
 
 BookSchema.methods.toDataTransferObject = function (): BookDto {
-  
   const tags: string[] = this.populated("tags")
     ? this.tags.map((tag: ITag) => tag.slug)
     : [];

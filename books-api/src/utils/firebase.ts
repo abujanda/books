@@ -2,7 +2,7 @@ import admin from "../libs/firebase";
 
 export const authenticateToken = async (token: string) => {
   if (!token) {
-    throw new Error("No token provided");
+    return null;
   }
 
   try {

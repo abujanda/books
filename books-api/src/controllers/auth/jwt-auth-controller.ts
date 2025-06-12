@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as authService from "../services/auth/jwt-auth-service";
+import * as authService from "../../services/auth/jwt-service";
 
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
@@ -21,10 +21,10 @@ export const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const signInUser = async (req: Request, res: Response) => {
+export const signIn = async (req: Request, res: Response) => {
   try {
     const options = req.body;
-    const user = await authService.signInUser(options);
+    const user = await authService.signIn(options);
     if (user) {
       res.status(200).json(user);
     } else {
@@ -41,10 +41,10 @@ export const signInUser = async (req: Request, res: Response) => {
   }
 };
 
-export const signUpUser = async (req: Request, res: Response) => {
+export const signUp = async (req: Request, res: Response) => {
   try {
     const options = req.body;
-    const newUser = await authService.signUpUser(options);
+    const newUser = await authService.signUp(options);
     res.status(201).json(newUser);
   } catch (error: any) {
     res.status(error.status || 500).json({ message: error.message });

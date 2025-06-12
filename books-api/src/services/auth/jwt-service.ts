@@ -44,7 +44,7 @@ export const getUserProfile = async (
   }
 };
 
-export const signInUser = async (options: SignInOptionsDto): SignInResponse => {
+export const signIn = async (options: SignInOptionsDto): SignInResponse => {
   try {
     const existingUser = await User.findOne({ email: options.email });
 
@@ -71,7 +71,7 @@ export const signInUser = async (options: SignInOptionsDto): SignInResponse => {
   }
 };
 
-export const signUpUser = async (options: SignUpOptionsDto): SignUpResponse => {
+export const signUp = async (options: SignUpOptionsDto): SignUpResponse => {
   // Validate email format
   if (!validator.isEmail(options.email)) {
     throw createError(400, "Please provide a valid email address.");
