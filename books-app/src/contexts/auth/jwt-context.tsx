@@ -1,10 +1,11 @@
 import type { FC, ReactNode } from "react";
 import { createContext, useCallback, useEffect, useReducer } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { authApi } from "../api/auth-api";
-import type { User } from "../types/user";
-import type { SignInOptions, SignUpOptions } from "../types/auth";
-import axios from "../utils/axios";
+import { authApi } from "@/api/auth-api/jwt-auth-api";
+import type { User } from "@/types/user";
+import type { SignInOptions, SignUpOptions } from "@/types/auth";
+import { Issuer } from "@/utils/auth";
+import axios from "@/utils/axios";
 
 const STORAGE_KEY = "at";
 
@@ -13,19 +14,6 @@ interface State {
   isAuthenticated: boolean;
   //isTwoFactorAuthenticated: boolean;
   user: User | null;
-}
-
-export interface AuthContextValue extends State {
-  platform: "JWT";
-  getCurrentUser: () => Promise<void>;
-  signIn: (options: SignInOptions) => Promise<void>;
-  signOut: () => Promise<void>;
-  signUp: (options: SignUpOptions) => Promise<void>;
-  //twoFactorAuthenticate: (options: TwoFactorOptions) => Promise<void>;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
 }
 
 enum ActionType {
@@ -132,15 +120,28 @@ const handlers: Record<ActionType, Handler> = {
 const reducer = (state: State, action: Action): State =>
   handlers[action.type] ? handlers[action.type](state, action) : state;
 
-export const AuthContext = createContext<AuthContextValue>({
+export interface AuthContextType extends State {
+  issuer: Issuer.Jwt;
+  getCurrentUser: () => Promise<void>;
+  signIn: (options: SignInOptions) => Promise<void>;
+  signOut: () => Promise<void>;
+  signUp: (options: SignUpOptions) => Promise<void>;
+  //twoFactorAuthenticate: (options: TwoFactorOptions) => Promise<void>;
+}
+
+export const AuthContext = createContext<AuthContextType>({
   ...initialState,
-  platform: "JWT",
+  issuer: Issuer.Jwt,
   getCurrentUser: () => Promise.resolve(),
   signIn: () => Promise.resolve(),
   signOut: () => Promise.resolve(),
   signUp: () => Promise.resolve(),
   //twoFactorAuthenticate: () => Promise.resolve(),
 });
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
@@ -314,7 +315,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        platform: "JWT",
+        issuer: Issuer.Jwt,
         getCurrentUser,
         signIn,
         signOut,

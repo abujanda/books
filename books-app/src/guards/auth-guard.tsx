@@ -2,7 +2,7 @@ import type { FC, ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/use-auth";
-import { paths } from "../paths";
+import { authPaths } from "../paths";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -19,7 +19,7 @@ export const AuthGuard: FC<AuthGuardProps> = (props) => {
       const searchParams = new URLSearchParams({
         returnTo: window.location.href,
       }).toString();
-      const href = paths.auth.signin + `?${searchParams}`;
+      const href = authPaths.signin + `?${searchParams}`;
       router.replace(href);
     } else {
       setChecked(true);

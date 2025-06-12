@@ -1,10 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Card, CardContent, CardHeader, Link, Typography } from "@mui/material";
-import { Layout as AuthLayout } from "../../layouts/auth/classic-layout";
-import { paths } from "../../paths";
-import { GuestGuard } from "../../guards/guest-guard";
-import { JWTRegister } from "../../sections/auth/jwt-register";
+import { Layout as AuthLayout } from "@/layouts/auth/classic-layout";
+import { paths } from "@/paths";
+import { GuestGuard } from "@/guards/guest-guard";
+import { IssuerGuard } from "@/guards/issuer-guard";
+import { JWTRegister } from "@/sections/auth/jwt-register";
+import { Issuer } from "@/utils/auth";
 
 const Page: NextPage = () => {
   return (
@@ -19,7 +21,7 @@ const Page: NextPage = () => {
               <Typography color="text.secondary" variant="body2">
                 Already have an account? &nbsp;
                 <Link
-                  href={paths.auth.signin}
+                  href={paths.auth.jwt.signin}
                   underline="hover"
                   variant="subtitle2"
                 >
@@ -40,11 +42,11 @@ const Page: NextPage = () => {
 };
 
 Page.getLayout = (page) => (
-  <GuestGuard>
-    <AuthLayout>
-      {page}
-    </AuthLayout>
-  </GuestGuard>
-)
+  <IssuerGuard issuer={Issuer.Jwt}>
+    <GuestGuard>
+      <AuthLayout>{page}</AuthLayout>
+    </GuestGuard>
+  </IssuerGuard>
+);
 
 export default Page;

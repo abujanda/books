@@ -18,7 +18,6 @@ import { useMounted } from "@/hooks/use-mounted";
 import { Layout as BooksLayout } from "@/layouts/books";
 import { paths } from "@/paths";
 import { BookPreviewList } from "@/sections/book/book-preview-list";
-import { BookPreview } from "@/sections/book/book-preview-list/book-preview";
 import { Book } from "@/types/book";
 
 // https://sive.rs/book

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { AuthConfig } from "./config";
 import { PasswordField } from "@/components/password-field";
+import { AuthContextType } from "@/contexts/auth/jwt-context";
 import { useAuth } from "@/hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
 import { useSearchParams } from "@/hooks/use-search-params";
@@ -67,7 +68,7 @@ export const JWTRegister: FC = () => {
   const isMounted = useMounted();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo");
-  const { signUp } = useAuth();
+  const { signUp } = useAuth<AuthContextType>();
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -165,7 +166,7 @@ export const JWTRegister: FC = () => {
           type="submit"
           variant="contained"
         >
-          Create
+          Register
         </Button>
       </form>
     </>

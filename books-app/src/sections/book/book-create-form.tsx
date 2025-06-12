@@ -25,6 +25,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { bookApi } from "@/api/book-api";
 import { QuillEditor } from "@/components/quill-editor";
 import { RouterLink } from "@/components/router-link";
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "@/hooks/use-router";
 import { paths } from "@/paths";
 import type { Tag } from "@/types/tag";
@@ -68,7 +69,7 @@ interface BookCreateFormProps {
 
 export const BookCreateForm: FC<BookCreateFormProps> = (props) => {
   const { tagOptions, tagOptionsLoading } = props;
-  const userId = "67edaebdcafe04054f9b64ed"; // TODO: Replace with actual user ID logic
+  const { user } = useAuth();
   const router = useRouter();
   const formik = useFormik({
     initialValues,
@@ -84,7 +85,7 @@ export const BookCreateForm: FC<BookCreateFormProps> = (props) => {
           summary: values.summary,
           tags: values.tags,
           title: values.title,
-          userId: userId,
+          userId: user!.id,
         });
 
         helpers.setStatus({ success: true });

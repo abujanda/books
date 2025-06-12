@@ -2,7 +2,7 @@ import type { SignInOptions, SignUpOptions } from "@/types/auth";
 import type { User } from "@/types/user";
 import { requests } from "@/utils/axios";
 
-class AuthApi {
+class JwtAuthApi {
   me(): Promise<User> {
     return requests.get("/auth/me");
   }
@@ -16,4 +16,4 @@ class AuthApi {
   }
 }
 
-export const authApi = new AuthApi();
+export const authApi = new JwtAuthApi();

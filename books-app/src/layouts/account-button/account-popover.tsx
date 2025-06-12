@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 //import { Logo } from "../../../components/logo";
 import { useAuth } from "@/hooks/use-auth";
-import { paths } from "@/paths";
+import { authPaths } from "@/paths";
 import { getInitials } from "@/utils/get-initials";
 
 interface AccountPopoverProps {
@@ -32,7 +32,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       setLoggingOut(true);
       setTimeout(async () => {
         onClose?.();
-        window.location = paths.auth.signin as any;
+        window.location = authPaths.signin as any;
         await signOut();
         setLoggingOut(false);
       }, 2500);

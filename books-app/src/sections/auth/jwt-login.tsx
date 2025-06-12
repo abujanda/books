@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PasswordField } from "@/components/password-field";
+import { AuthContextType } from "@/contexts/auth/jwt-context";
 import { useAuth } from "@/hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
 import { useSearchParams } from "@/hooks/use-search-params";
@@ -41,7 +42,7 @@ const validationSchema = Yup.object({
 });
 
 export const JWTLogin: FC = (props) => {
-  const { signIn } = useAuth();
+  const { signIn } = useAuth<AuthContextType>();
   const isMounted = useMounted();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo");
