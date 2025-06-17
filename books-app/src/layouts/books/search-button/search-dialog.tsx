@@ -131,7 +131,8 @@ export const SearchDialog: FC<SearchDialogProps> = (props) => {
             <CircularProgress />
           </Box>
         )}
-        {!formik.isSubmitting && books &&
+        {!formik.isSubmitting &&
+          books &&
           (books.length > 0 ? (
             <Stack spacing={2} sx={{ mt: 3 }}>
               <Typography variant="h6">Books</Typography>
@@ -154,6 +155,7 @@ export const SearchDialog: FC<SearchDialogProps> = (props) => {
                     >
                       <Badge color="primary" variant="dot" />
                       <Typography
+                        color="inherit"
                         component={Link}
                         href={`/books/${book.id}`}
                         variant="subtitle1"

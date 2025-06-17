@@ -66,11 +66,11 @@ export const Layout: FC<LayoutProps> = (props) => {
                   letterSpacing: "0.3px",
                   lineHeight: 2.5,
                   "& span": {
-                    color: "primary.main",
+                    color: "primary.dark",
                   },
                 }}
               >
-                Book <span>Notes</span> App
+                Book <span>Notes</span>
               </Box>
             </Stack>
           </Stack>

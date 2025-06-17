@@ -63,7 +63,7 @@ export const JWTLogin: FC = (props) => {
           helpers.setStatus({ success: true });
           helpers.setSubmitting(false);
 
-          window.location.href = returnTo || paths.index;
+          window.location.href = returnTo || paths.books.index;
         }
       } catch (err: any) {
         console.error(err);

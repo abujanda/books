@@ -65,7 +65,7 @@ const Page: PageType = () => {
           >
             <Button
               component={RouterLink}
-              href={paths.index}
+              href={paths.books.index}
             >
               Back to Home
             </Button>

@@ -65,19 +65,12 @@ const Page: PageType = () => {
                 <Link
                   color="text.primary"
                   component={RouterLink}
-                  href={paths.index}
-                  variant="subtitle2"
-                >
-                  Notes
-                </Link>
-                <Link
-                  color="text.primary"
-                  component={RouterLink}
                   href={paths.books.index}
                   variant="subtitle2"
                 >
                   Books
                 </Link>
+
                 <Typography color="text.secondary" variant="subtitle2">
                   Create
                 </Typography>
@@ -91,10 +84,6 @@ const Page: PageType = () => {
   );
 };
 
-Page.getLayout = (page) => (
-    <BooksLayout>
-        {page}
-    </BooksLayout>
-);
+Page.getLayout = (page) => <BooksLayout>{page}</BooksLayout>;
 
 export default Page;

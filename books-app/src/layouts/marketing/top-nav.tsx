@@ -1,34 +1,43 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { useCallback, useState } from "react";
-import { usePathname } from "next/navigation";
+import Menu01Icon from "@untitled-ui/icons-react/build/esm/Menu01";
 import type { Theme } from "@mui/material";
 import {
   Box,
+  Button,
+  Chip,
   Container,
   IconButton,
-  Link,
   Stack,
   SvgIcon,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
-import { alpha } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { Logo } from "@/components/logo";
 import { RouterLink } from "@/components/router-link";
+import { usePathname } from "@/hooks/use-pathname";
 import { useWindowScroll } from "@/hooks/use-window-scroll";
-import { AccountButton } from "@/layouts/account-button";
-import { SearchButton } from "@/layouts/books/search-button";
-import { paths } from "@/paths";
+import { authPaths, paths } from "@/paths";
+import { TopNavItem } from "./top-nav-item";
+
+interface Item {
+  disabled?: boolean;
+  external?: boolean;
+  popover?: ReactNode;
+  path?: string;
+  title: string;
+}
+
+const items: Item[] = [];
 
 const TOP_NAV_HEIGHT: number = 64;
 
 interface TopNavProps {
-  onMobileNav?: () => void;
+  onMobileNavOpen?: () => void;
 }
 
 export const TopNav: FC<TopNavProps> = (props) => {
-  const { onMobileNav } = props;
+  const { onMobileNavOpen } = props;
   const pathname = usePathname();
   const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
   const [elevate, setElevate] = useState<boolean>(false);
@@ -84,16 +93,14 @@ export const TopNav: FC<TopNavProps> = (props) => {
             alignItems="center"
             direction="row"
             spacing={1}
-            sx={{
-              flexGrow: 1,
-            }}
+            sx={{ flexGrow: 1 }}
           >
             <Stack
               alignItems="center"
               component={RouterLink}
               direction="row"
               display="inline-flex"
-              href={paths.books.index}
+              href={paths.index}
               spacing={1}
               sx={{ textDecoration: "none" }}
             >
@@ -116,7 +123,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
                     letterSpacing: "0.3px",
                     lineHeight: 2.5,
                     "& span": {
-                      color: "primary.dark",
+                      color: "primary.main",
                     },
                   }}
                 >
@@ -124,16 +131,73 @@ export const TopNav: FC<TopNavProps> = (props) => {
                 </Box>
               )}
             </Stack>
-            <Stack
-              alignItems="center"
-              direction="row"
-              justifyContent="flex-end"
-              spacing={2}
-              sx={{ flexGrow: 1 }}
-            >
-              <SearchButton />
-              <AccountButton />
+            {/* <Chip label="v6.1.0" size="small" /> */}
+          </Stack>
+          {mdUp && (
+            <Stack alignItems="center" direction="row" spacing={2}>
+              <Box component="nav" sx={{ height: "100%" }}>
+                <Stack
+                  component="ul"
+                  alignItems="center"
+                  justifyContent="center"
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    height: "100%",
+                    listStyle: "none",
+                    m: 0,
+                    p: 0,
+                  }}
+                >
+                  <>
+                    {items.map((item) => {
+                      const checkPath = !!(item.path && pathname);
+                      const partialMatch = checkPath
+                        ? pathname.includes(item.path!)
+                        : false;
+                      const exactMatch = checkPath
+                        ? pathname === item.path
+                        : false;
+                      const active = item.popover ? partialMatch : exactMatch;
+
+                      return (
+                        <TopNavItem
+                          active={active}
+                          external={item.external}
+                          key={item.title}
+                          path={item.path}
+                          popover={item.popover}
+                          title={item.title}
+                        />
+                      );
+                    })}
+                  </>
+                </Stack>
+              </Box>
             </Stack>
+          )}
+          <Stack
+            alignItems="center"
+            direction="row"
+            justifyContent="flex-end"
+            spacing={2}
+            sx={{ flexGrow: 1 }}
+          >
+            <Button
+              component={RouterLink}
+              size={mdUp ? "medium" : "small"}
+              href={authPaths.signin}
+              variant="contained"
+            >
+              Sign In
+            </Button>
+            {!mdUp && (
+              <IconButton onClick={onMobileNavOpen}>
+                <SvgIcon fontSize="small">
+                  <Menu01Icon />
+                </SvgIcon>
+              </IconButton>
+            )}
           </Stack>
         </Stack>
       </Container>

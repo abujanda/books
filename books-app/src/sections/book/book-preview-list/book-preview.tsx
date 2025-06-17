@@ -26,11 +26,12 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
           <BookCover height={150} isbn={isbn} title={title} width={100} />
           <div>
             <Typography
-              variant="h5"
+              color="inherit"
               component={Link}
               fontWeight="bold"
               href={`/books/${id}`}
               underline="hover"
+              variant="h5"
             >
               {title}
             </Typography>
