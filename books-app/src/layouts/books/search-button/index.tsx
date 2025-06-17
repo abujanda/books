@@ -2,7 +2,7 @@ import type { FC } from "react";
 import SearchMdIcon from "@untitled-ui/icons-react/build/esm/SearchMd";
 import { IconButton, SvgIcon, Tooltip } from "@mui/material";
 import { useDialog } from "@/hooks/use-dialog";
-import { SearchDialog } from "@/layouts/search-button/search-dialog";
+import { SearchDialog } from "@/layouts/books/search-button/search-dialog";
 
 export const SearchButton: FC = () => {
   const dialog = useDialog();

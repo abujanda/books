@@ -66,7 +66,7 @@ const Page: PageType = () => {
 
         if (isMounted()) {
           // returnTo could be an absolute path
-          window.location.href = returnTo || paths.index;
+          window.location.href = returnTo || paths.books.index;
         }
       } catch (err: any) {
         console.error(err);
@@ -86,7 +86,7 @@ const Page: PageType = () => {
 
       if (isMounted()) {
         // returnTo could be an absolute path
-        window.location.href = returnTo || paths.index;
+        window.location.href = returnTo || paths.books.index;
       }
     } catch (err) {
       console.error(err);

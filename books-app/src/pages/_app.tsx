@@ -15,7 +15,7 @@ import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import "react-quill-new/dist/quill.snow.css";
 
-const DEFAULT_COLOR_PRESET = "indigo";
+const DEFAULT_COLOR_PRESET = "amber";
 const DEFAULT_CONTRAST = "high";
 
 const clientSideEmotionCache = createEmotionCache();

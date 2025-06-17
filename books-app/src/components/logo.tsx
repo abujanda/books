@@ -1,48 +1,31 @@
 import type { FC } from "react";
-import { useTheme } from "@mui/material/styles";
 
 export const Logo: FC = () => {
-  const theme = useTheme();
-  const fillColor = theme.palette.primary.main;
-
   return (
     <svg
       fill="none"
       height="100%"
-      viewBox="0 0 24 24"
+      viewBox="0 0 64 64"
       width="100%"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="24" height="24" rx="3" fill="#FFF8F0" />
-
-      <rect x="5.6" y="5.6" width="7.2" height="11.2" rx="1" fill={fillColor} />
-      <line
-        x1="7.2"
-        y1="8"
-        x2="11.2"
-        y2="8"
-        stroke="#D8B4FE"
-        strokeWidth="0.6"
+      <rect width="64" height="64" rx="12" fill="#1F2937" />
+      <rect x="12" y="12" width="40" height="40" rx="8" fill="#FBC02D" />
+      <path d="M44 12 v14 l-4 -4 -4 4 V12 Z" fill="#F59E0B" />
+      <path
+        d="M16 44 h32 a2 2 0 0 1 -2 2 H18 a2 2 0 0 1 -2 -2 Z"
+        fill="#FFE082"
       />
-      <line
-        x1="7.2"
-        y1="9.6"
-        x2="11.2"
-        y2="9.6"
-        stroke="#D8B4FE"
-        strokeWidth="0.6"
-      />
-      <line
-        x1="7.2"
-        y1="11.2"
-        x2="10.7"
-        y2="11.2"
-        stroke="#D8B4FE"
-        strokeWidth="0.6"
-      />
-
-      <polygon points="13,15 16,12 16.6,12.6 13.6,15.6" fill="#F59E0B" />
-      <polygon points="13,15 13.6,15.6 12,16" fill="#FCD34D" />
+      <text
+        x="22"
+        y="38"
+        font-size="20"
+        fill="#1F2937"
+        font-family="sans-serif"
+        font-weight="bold"
+      >
+        N
+      </text>
     </svg>
   );
 };

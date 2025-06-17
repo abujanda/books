@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { notFound, useParams } from "next/navigation";
 import {
@@ -95,15 +94,15 @@ const Page: PageType = () => {
                 <Typography variant="h4">Book</Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <Link
-                    color="primary"
+                    color="text.primary"
                     component={RouterLink}
-                    href={paths.index}
+                    href={paths.books.index}
                     variant="subtitle2"
                   >
-                    Notes
+                    Books
                   </Link>
                   <Typography color="text.secondary" variant="subtitle2">
-                    Book
+                    {book.id}
                   </Typography>
                 </Breadcrumbs>
               </Stack>
@@ -135,10 +134,6 @@ const Page: PageType = () => {
   );
 };
 
-Page.getLayout = (page) => (
-    <BooksLayout>
-        {page}
-    </BooksLayout>
-);
+Page.getLayout = (page) => <BooksLayout>{page}</BooksLayout>;
 
 export default Page;

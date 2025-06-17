@@ -41,7 +41,7 @@ export const BookNotes: FC<BookNotesProps> = (props) => {
           <Stack direction="row" spacing={1}>
             {tags.map((tag) => (
               <Chip
-                color="secondary"
+                color="info"
                 key={tag}
                 label={tag}
                 size="small"

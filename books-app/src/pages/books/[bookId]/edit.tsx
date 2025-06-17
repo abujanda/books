@@ -105,20 +105,20 @@ const Page: PageType = () => {
               <Typography variant="h4">Edit book</Typography>
               <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                 <Link
-                  color="primary"
+                  color="text.primary"
                   component={RouterLink}
-                  href={paths.index}
+                  href={paths.books.index}
                   variant="subtitle2"
                 >
-                  Notes
+                  Books
                 </Link>
                 <Link
-                  color="primary"
+                  color="text.primary"
                   component={RouterLink}
                   href={`/books/${book.id}`}
                   variant="subtitle2"
                 >
-                  Book
+                  {book.id}
                 </Link>
                 <Typography color="text.secondary" variant="subtitle2">
                   Edit
@@ -144,10 +144,6 @@ const Page: PageType = () => {
   );
 };
 
-Page.getLayout = (page) => (
-    <BooksLayout>
-        {page}
-    </BooksLayout>
-);
+Page.getLayout = (page) => <BooksLayout>{page}</BooksLayout>;
 
 export default Page;

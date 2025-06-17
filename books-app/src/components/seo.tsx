@@ -9,8 +9,8 @@ export const Seo: FC<SeoProps> = (props) => {
   const { title } = props;
 
   const fullTitle = title
-    ? title + ' | My Book App'
-    : 'My Book App';
+    ? title + ' | Book Notes'
+    : 'Book Notes';
 
   return (
     <Head>

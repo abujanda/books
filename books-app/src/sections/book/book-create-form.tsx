@@ -260,7 +260,7 @@ export const BookCreateForm: FC<BookCreateFormProps> = (props) => {
           <Button
             color="inherit"
             disabled={formik.isSubmitting}
-            href={paths.index}
+            href={paths.books.index}
             LinkComponent={RouterLink}
           >
             Cancel
@@ -271,7 +271,7 @@ export const BookCreateForm: FC<BookCreateFormProps> = (props) => {
             type="submit"
             variant="contained"
           >
-            Submit
+            Create
           </Button>
         </Stack>
       </Stack>
