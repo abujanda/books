@@ -27,6 +27,7 @@ The project is built using the **MERN stack**: **MongoDB, Express, React.js/Next
 - **Read** details of a single book or all books for a user
 - **Update** existing book notes
 - **Delete** a book note
+- **Search** for a book
 - **User association** with each book
 
 ## 📦`books-api` — Backend Overview
@@ -38,17 +39,48 @@ The `books-api` contains:
 - **Services**: Business logic for interacting with the database
 - **Routes**: API endpoints
 
+## User Model
+
+```typescript
+
+const UserSchema: Schema = new Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    emailConfirmed: { type: Boolean, default: false },
+    firebaseUid: { type: String, unique: true, sparse: true }, // For Firebase authentication
+    name: { type: String, required: true },
+    password: {
+      type: String,
+      required: function () {
+        return authConfig.strategy === Issuer.Jwt; // Password is required only for JWT strategy
+      },
+    },
+  },
+  { timestamps: true }
+);
+
+````
+
 ## Book Model
 
 ```typescript
 
-const bookSchema: Schema = new mongoose.Schema(
+const BookSchema: Schema = new mongoose.Schema(
   {
-    isbn: { type: String, required: true, unique: true },
-    notes: { type: String, default: null },
+    isbn: { type: String, required: true },
+    notes: {
+      html: { type: String, default: null },
+      plain: { type: String, default: null },
+    },
     rating: { type: Number, min: 0, max: 5, default: null },
     readDate: { type: Date, default: null },
     summary: { type: String },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
     title: { type: String, required: true },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -61,10 +93,26 @@ const bookSchema: Schema = new mongoose.Schema(
 
 ````
 
+## Tag Model
+
+```typescript
+
+const TagSchema: Schema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true },
+  },
+  { timestamps: true }
+);
+
+````
+
 ## API Endpoints
 
-| Method | Endpoint                | Description              |
-|--------|-------------------------|--------------------------|
+| Method | Endpoint                | Description             |
+|--------|-------------------------|-------------------------|
+| POST   | `/api/auth/signin`      | Sign in a user          |
+| POST   | `/api/auth/signup`      | Sign up a user          |
 | POST   | `/api/books`           | Create a new book        |
 | GET    | `/api/books/:id`       | Get a single book by ID  |
 | GET    | `/api/books?userId=...`| Get all books for a user |
@@ -81,25 +129,29 @@ The `books-app` allows the client to:
 
 Take a look at how the Book Notes app works:
 
-**View the list of books**
+**- View the list of books**
 
-<img src="assets/images/home.png" alt="Home page" width="600"/>
+<img src="assets/images/home-thumbnail.png" alt="Home page" width="600"/>
 
-**Create a book**
+**- Create a book**
 
-<img src="assets/images/create-book.png" alt="Create book page" width="600"/>
+<img src="assets/images/home-features-create.png" alt="Create book page" width="600"/>
 
-**View a book**
+**- View a book**
 
-<img src="assets/images/book-index.png" alt="Book index page" width="600"/>
+<img src="assets/images/home-features-book.png" alt="Book index page" width="600"/>
 
-**Edit a book**
+**- Edit a book**
 
-<img src="assets/images/edit-book.png" alt="Edit book page" width="600"/>
+<img src="assets/images/home-features-edit.png" alt="Edit book page" width="600"/>
 
-**Delete a book**
+**- Delete a book**
 
-<img src="assets/images/delete-book.png" alt="Delete book page" width="600"/>
+<img src="assets/images/home-features-delete.png" alt="Delete book page" width="600"/>
+
+**- Search for a book**
+
+<img src="assets/images/home-features-search.png" alt="Search books dialog" width="600"/>
 
 ## 🧪Getting Started
 
@@ -134,10 +186,15 @@ Start the frontend:
 cd ../books-app
 npm run dev
 ````
-
+## (NEW) v2.0 - June 18, 2025
+- ✅ User authentication and protected routes (Firebase & JWT)
+- ✅ Tagging or categorizing books
+- ✅ Search and filter capabilities
+- ✅ Rich text notes support
+  
 ## 📌 Future Enhancements
-
-- User authentication and protected routes
-- Tagging or categorizing books
-- Search and filter capabilities
-- Rich text notes support
+- AI-powered note summarizer
+- Sentiment analysis of notes
+- Reading streaks or habit tracker
+- Personal reading stats dashboard
+- Caching
