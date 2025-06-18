@@ -36,8 +36,8 @@ export const BookDeleteDialog: FC<BookDeleteDialogProps> = (props) => {
         await bookApi.deleteBook(bookId);
 
         onClose?.();
-        toast.success("Book deleted successfully.")
-        router.push(paths.index);
+        toast.success("Book deleted successfully.");
+        router.push(paths.books.index);
       } catch (err: any) {
         console.error(err);
         toast.success("Something went wrong!");
@@ -96,6 +96,7 @@ export const BookDeleteDialog: FC<BookDeleteDialogProps> = (props) => {
               "&:hover": {
                 backgroundColor: "error.dark",
               },
+              color: "common.white",
             }}
             type="submit"
             variant="contained"

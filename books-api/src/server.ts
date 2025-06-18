@@ -1,23 +1,28 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectDB from "./config/db";
-import authRoutes from "./routes/authRoutes";
-import bookRoutes from "./routes/bookRoutes";
+import connectMongoDb from "./libs/mongo-db";
+import { getAuthRoutes } from "./routes/auth";
+import bookRoutes from "./routes/book-routes";
+import tagRoutes from "./routes/tag-routes";
+import seedTags from "./seeds/tags";
 
 dotenv.config();
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+connectMongoDb().then(() => {
+  seedTags();
+});
 
 // Middleware
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", getAuthRoutes());
 app.use("/api/books", bookRoutes);
+app.use("/api/tags", tagRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

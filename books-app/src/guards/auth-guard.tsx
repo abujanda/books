@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/use-auth";
-import { paths } from "../paths";
+import { authPaths } from "../paths";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -11,37 +11,35 @@ interface AuthGuardProps {
 export const AuthGuard: FC<AuthGuardProps> = (props) => {
   const { children } = props;
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(
-    null
+  const { isAuthenticated } = useAuth();
+  const [checked, setChecked] = useState<boolean>(false);
+
+  const check = useCallback(() => {
+    if (!isAuthenticated) {
+      const searchParams = new URLSearchParams({
+        returnTo: window.location.href,
+      }).toString();
+      const href = authPaths.signin + `?${searchParams}`;
+      router.replace(href);
+    } else {
+      setChecked(true);
+    }
+  }, [isAuthenticated, router]);
+
+  useEffect(
+    () => {
+      check();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
-  if (!isAuthenticated) {
-    if (location.pathname !== requestedLocation) {
-      setRequestedLocation(location.pathname);
-    }
-
-    router.replace(paths.auth.signIn);
+  if (!checked) {
     return null;
   }
 
-  if (user?.emailConfirmed === false) {
-    if (location.pathname !== requestedLocation) {
-      setRequestedLocation(location.pathname);
-    }
-
-    router.replace(paths.auth.verifyEmail.index);
-    return null;
-  }
-
-  // This is done so that in case the route changes by any chance through other
-  // means between the moment of request and the render we navigate to the initially
-  // requested route.
-  if (requestedLocation && location.pathname !== requestedLocation) {
-    setRequestedLocation(null);
-    router.replace(requestedLocation);
-    return null;
-  }
+  // If got here, it means that the redirect did not occur, and that tells us that the user is
+  // authenticated / authorized.
 
   return <>{children}</>;
 };

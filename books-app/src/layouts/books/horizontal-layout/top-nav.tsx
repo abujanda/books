@@ -1,5 +1,3 @@
-"use client";
-
 import type { FC } from "react";
 import { useCallback, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -16,9 +14,11 @@ import {
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material";
+import { Logo } from "@/components/logo";
 import { RouterLink } from "@/components/router-link";
 import { useWindowScroll } from "@/hooks/use-window-scroll";
 import { AccountButton } from "@/layouts/account-button";
+import { SearchButton } from "@/layouts/books/search-button";
 import { paths } from "@/paths";
 
 const TOP_NAV_HEIGHT: number = 64;
@@ -93,10 +93,19 @@ export const TopNav: FC<TopNavProps> = (props) => {
               component={RouterLink}
               direction="row"
               display="inline-flex"
-              href={paths.index}
+              href={paths.books.index}
               spacing={1}
               sx={{ textDecoration: "none" }}
             >
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  height: 24,
+                  width: 24,
+                }}
+              >
+                <Logo />
+              </Box>
               {mdUp && (
                 <Box
                   sx={{
@@ -107,11 +116,11 @@ export const TopNav: FC<TopNavProps> = (props) => {
                     letterSpacing: "0.3px",
                     lineHeight: 2.5,
                     "& span": {
-                      color: "primary.main",
+                      color: "primary.dark",
                     },
                   }}
                 >
-                  Notes <span>App</span>
+                  Book <span>Notes</span>
                 </Box>
               )}
             </Stack>
@@ -122,7 +131,8 @@ export const TopNav: FC<TopNavProps> = (props) => {
               spacing={2}
               sx={{ flexGrow: 1 }}
             >
-              {/* <AccountButton /> */}
+              <SearchButton />
+              <AccountButton />
             </Stack>
           </Stack>
         </Stack>

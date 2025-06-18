@@ -1,11 +1,18 @@
 import type { FC } from "react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Avatar, Box, Link, Popover, Stack, Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import {
+  Avatar,
+  Box,
+  Button,
+  Link,
+  Popover,
+  Stack,
+  Typography,
+} from "@mui/material";
 //import { Logo } from "../../../components/logo";
 import { useAuth } from "@/hooks/use-auth";
-import { paths } from "@/paths";
+import { authPaths } from "@/paths";
 import { getInitials } from "@/utils/get-initials";
 
 interface AccountPopoverProps {
@@ -25,7 +32,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       setLoggingOut(true);
       setTimeout(async () => {
         onClose?.();
-        window.location = paths.auth.signIn as any;
+        window.location = authPaths.signin as any;
         await signOut();
         setLoggingOut(false);
       }, 2500);
@@ -46,7 +53,13 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       disableScrollLock
       onClose={onClose}
       open={!!open}
-      PaperProps={{ sx: { width: 300 } }}
+      slotProps={{
+        paper: {
+          sx: {
+            width: 300,
+          },
+        },
+      }}
       transitionDuration={0}
       {...other}
     >
@@ -65,7 +78,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             width: 64,
           }}
         /> */}
-        <LoadingButton
+        <Button
           color="inherit"
           loading={loggingOut}
           onClick={handleLogout}
@@ -74,7 +87,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
           <Typography color="inherit" fontWeight="light" variant="caption">
             Sign out
           </Typography>
-        </LoadingButton>
+        </Button>
       </Stack>
       <Stack alignItems="center" direction="row" spacing={3} sx={{ p: 2 }}>
         <Avatar
@@ -96,10 +109,10 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             </Typography>
           </Box>
 
-          <Link href={paths.account.index} onClick={onClose} underline="always">
+          <Link href="#" onClick={onClose} underline="always">
             <Typography variant="body2">My account</Typography>
           </Link>
-          <Link href={paths.profile.index} onClick={onClose} underline="always">
+          <Link href="#" onClick={onClose} underline="always">
             <Typography variant="body2">My profile</Typography>
           </Link>
         </Stack>
