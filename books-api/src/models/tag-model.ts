@@ -8,7 +8,7 @@ export interface ITag extends Document {
   toDataTransferObject(): TagDto;
 }
 
-const tagSchema: Schema = new mongoose.Schema(
+const TagSchema: Schema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     slug: { type: String, required: true, unique: true },
@@ -16,7 +16,7 @@ const tagSchema: Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-tagSchema.methods.toDataTransferObject = function (): TagDto {
+TagSchema.methods.toDataTransferObject = function (): TagDto {
   return {
     id: (this._id as unknown as string).toString(),
     name: this.name,
@@ -24,4 +24,4 @@ tagSchema.methods.toDataTransferObject = function (): TagDto {
   } as TagDto;
 };
 
-export default mongoose.model<ITag>("Tag", tagSchema);
+export default mongoose.model<ITag>("Tag", TagSchema);
