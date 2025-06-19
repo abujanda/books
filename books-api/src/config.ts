@@ -2,13 +2,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
+export const isProduction = process.env.NODE_ENV === "production";
 
 export const authConfig = {
   firebase: {
-    apiKey: process.env.FIREBASE_PRIVATE_KEY || "",
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL || "",
-    projectId: process.env.FIREBASE_PROJECT_ID || "",
+    credentials: process.env.FIREBASE_CREDENTIALS || ""
   },
   jwt: {
     secret: process.env.JWT_SECRET || "",

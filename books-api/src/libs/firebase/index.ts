@@ -1,4 +1,5 @@
 import admin from "firebase-admin";
+import { authConfig, isProduction } from "../../config";
 import path from "path";
 
 // Initialize Firebase Admin SDK with service account credentials.
@@ -8,10 +9,11 @@ import path from "path";
 // and should contain the necessary credentials for Firebase Admin SDK.
 // This file should not be committed to version control for security reasons.
 
-const serviceAccount = require(path.resolve(
-  __dirname,
-  "./service-account-key.json"
-));
+const { firebase } = authConfig;
+
+const serviceAccount = !isProduction
+  ? require(path.resolve(__dirname, "./service-account-key.json"))
+  : JSON.parse(Buffer.from(firebase.credentials, "base64").toString("utf8"));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
