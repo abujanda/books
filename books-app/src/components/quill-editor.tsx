@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
-import type ReactQuillProps from "react-quill-new";
-//import type { ReactQuillProps as QuillProps } from 'react-quill';
+//import type ReactQuillProps from "react-quill-new";
 import { styled } from "@mui/material/styles";
 
 const Editor = dynamic(

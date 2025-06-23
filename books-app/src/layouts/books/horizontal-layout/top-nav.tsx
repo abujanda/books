@@ -1,18 +1,13 @@
 import type { FC } from "react";
 import { useCallback, useState } from "react";
-import { usePathname } from "next/navigation";
+//import { usePathname } from "next/navigation";
 import type { Theme } from "@mui/material";
 import {
   Box,
   Container,
-  IconButton,
-  Link,
   Stack,
-  SvgIcon,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
 import { alpha } from "@mui/material";
 import { Logo } from "@/components/logo";
 import { RouterLink } from "@/components/router-link";
@@ -28,8 +23,8 @@ interface TopNavProps {
 }
 
 export const TopNav: FC<TopNavProps> = (props) => {
-  const { onMobileNav } = props;
-  const pathname = usePathname();
+  //const { onMobileNav } = props;
+ // const pathname = usePathname();
   const mdUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"));
   const [elevate, setElevate] = useState<boolean>(false);
   const offset = 64;

@@ -10,7 +10,8 @@ const nextConfig: NextConfig = {
         pathname: "/b/isbn/**",
       },
     ],
-  }
+  },
+  reactStrictMode: false,
 };
 
 export default nextConfig;

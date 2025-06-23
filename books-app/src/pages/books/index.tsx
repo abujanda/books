@@ -20,8 +20,6 @@ import { paths } from "@/paths";
 import { BookPreviewList } from "@/sections/book/book-preview-list";
 import { Book } from "@/types/book";
 
-// https://sive.rs/book
-
 const useBooks = () => {
   const isMounted = useMounted();
   const { user } = useAuth();
