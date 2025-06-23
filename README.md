@@ -7,6 +7,9 @@ The project is built using the **MERN stack**: **MongoDB, Express, React.js/Next
 - [`books-api`](./books-api) — The backend API (Node.js + Express)
 - [`books-app`](./books-app) — The frontend application (Next.js)
 
+## Live Demo
+[![Live Site](https://img.shields.io/badge/Live-BookNotes-green?style=flat-square&logo=vercel)](https://book-notes-lyart.vercel.app)
+
 ## 📚 Project Structure
 
 ```bash
