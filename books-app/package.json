@@ -21,6 +21,7 @@
     "@mui/x-date-pickers": "^7.28.3",
     "@reduxjs/toolkit": "^2.8.2",
     "@untitled-ui/icons-react": "^0.1.4",
+    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.4",
     "date-fns": "^2.30.0",
     "dompurify": "^3.2.5",

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import type { Theme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { NavColor } from "@/types/settings";
 //import { MobileNav } from "../mobile-nav";
 import { TopNav } from "./top-nav";
@@ -63,7 +64,10 @@ export const HorizontalLayout: FC<HorizontalLayoutProps> = (props) => {
           open={mobileNav.isOpen}
         />
       )} */}
-      <HorizontalLayoutRoot>{children}</HorizontalLayoutRoot>
+      <HorizontalLayoutRoot>
+        {children}
+        <SpeedInsights />
+      </HorizontalLayoutRoot>
     </>
   );
 };
