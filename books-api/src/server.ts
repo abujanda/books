@@ -4,6 +4,7 @@ import cors from "cors";
 import connectMongoDb from "./libs/mongo-db";
 import { getAuthRoutes } from "./routes/auth";
 import bookRoutes from "./routes/book-routes";
+import pingRoutes from "./routes/ping";
 import tagRoutes from "./routes/tag-routes";
 import seedTags from "./seeds/tags";
 
@@ -22,6 +23,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", getAuthRoutes());
 app.use("/api/books", bookRoutes);
+app.use("/api/ping", pingRoutes);
 app.use("/api/tags", tagRoutes);
 
 const PORT = process.env.PORT || 5000;
