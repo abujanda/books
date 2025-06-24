@@ -1,17 +1,16 @@
 import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
-import { apiConfig } from "../config";
+import { apiConfig, isProduction } from "../config";
 
 const axiosInstance = axios.create({
   baseURL: apiConfig.baseUrl,
-  timeout: 30000,
+  timeout: 50000,
 });
-
-//const router = useRouter();
 
 axiosInstance.interceptors.response.use(undefined, (error) => {
   if (error.code === "ERR_NETWORK" || !error.response) {
     toast.error("Network Error: Make sure API is running!");
+    return;
   }
   const { status, data, config } = error.response;
   if (status === 404) {
@@ -43,9 +42,9 @@ const sleep =
       setTimeout(() => resolve(response), ms)
     );
 
-const sleepTimeout = 0;
+const sleepTimeout = isProduction ? 0 : 2000;
 
-const responseBody = (response: AxiosResponse) => response.data;
+const responseBody = (response: AxiosResponse) => response?.data;
 
 export const requests = {
   del: (url: string) =>

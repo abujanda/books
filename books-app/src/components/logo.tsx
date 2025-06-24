@@ -19,10 +19,10 @@ export const Logo: FC = () => {
       <text
         x="22"
         y="38"
-        font-size="20"
+        fontSize="20"
         fill="#1F2937"
-        font-family="sans-serif"
-        font-weight="bold"
+        fontFamily="sans-serif"
+        fontWeight="bold"
       >
         N
       </text>

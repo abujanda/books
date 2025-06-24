@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { Typography, Link, Card, CardContent, Stack } from "@mui/material";
 import { BookCover } from "../book-cover";
+import { RouterLink } from "@/components/router-link";
 import { utcToLocal } from "@/utils/format-date";
 
 interface BookPreviewProps {
@@ -25,16 +26,16 @@ export const BookPreview: FC<BookPreviewProps> = (props) => {
         <Stack direction="row" spacing={2}>
           <BookCover height={150} isbn={isbn} title={title} width={100} />
           <div>
-            <Typography
+            <Link
               color="inherit"
-              component={Link}
+              component={RouterLink}
               fontWeight="bold"
               href={`/books/${id}`}
               underline="hover"
               variant="h5"
             >
               {title}
-            </Typography>
+            </Link>
             <Stack direction="row" spacing={1} sx={{ mt: 0.5 }}>
               <Typography
                 color="text.secondary"

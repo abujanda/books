@@ -103,11 +103,11 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           payload: {
             isAuthenticated: true,
             user: {
-              id: profile.id,
-              accessToken: profile.accessToken,
-              email: profile.email || "",
-              emailConfirmed: profile.emailConfirmed || false,
-              name: profile.name || "",
+              id: profile?.id,
+              accessToken: profile?.accessToken,
+              email: profile?.email || "",
+              emailConfirmed: profile?.emailConfirmed || false,
+              name: profile?.name || "",
             },
           },
         });

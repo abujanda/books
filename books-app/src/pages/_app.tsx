@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { Provider as ReduxProvider } from "react-redux";
+//import { Provider as ReduxProvider } from "react-redux";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,8 +9,12 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LoadingBackdrop } from "@/components/loading-backdrop";
 import { SplashScreen } from "@/components/splash-screen";
 import { Toaster } from "../components/toaster";
+import {
+  ApiStatusConsumer,
+  ApiStatusProvider,
+} from "@/contexts/api-status-context";
 import { AuthConsumer, AuthProvider } from "../contexts/auth";
-import { store } from "../store";
+//import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import "react-quill-new/dist/quill.snow.css";
@@ -33,30 +37,43 @@ const App = (props: AppProps) => {
       </Head>
       {/* <ReduxProvider store={store}> */}
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <AuthProvider>
-          <AuthConsumer>
-            {(auth) => {
-              const showLoading = !auth.isInitialized;
-
-              const theme = createTheme({
-                colorPreset: DEFAULT_COLOR_PRESET,
-                contrast: DEFAULT_CONTRAST,
-              });
-
+        <ApiStatusProvider>
+          <ApiStatusConsumer>
+            {(status) => {
+              const isApiSleep = !status.active;
+              
               return (
-                <ThemeProvider theme={theme}>
-                  <CssBaseline />
-                  {showLoading ? (
-                    <LoadingBackdrop />
-                  ) : (
-                    getLayout(<Component {...pageProps} />)
-                  )}
-                  <Toaster />
-                </ThemeProvider>
+                <AuthProvider>
+                  <AuthConsumer>
+                    {(auth) => {
+                      const showLoading = !auth.isInitialized;
+                      const apiStatusMessage = isApiSleep
+                        ? "Waking up server..."
+                        : undefined;
+
+                      const theme = createTheme({
+                        colorPreset: DEFAULT_COLOR_PRESET,
+                        contrast: DEFAULT_CONTRAST,
+                      });
+
+                      return (
+                        <ThemeProvider theme={theme}>
+                          <CssBaseline />
+                          {showLoading ? (
+                            <LoadingBackdrop message={apiStatusMessage} />
+                          ) : (
+                            getLayout(<Component {...pageProps} />)
+                          )}
+                          <Toaster />
+                        </ThemeProvider>
+                      );
+                    }}
+                  </AuthConsumer>
+                </AuthProvider>
               );
             }}
-          </AuthConsumer>
-        </AuthProvider>
+          </ApiStatusConsumer>
+        </ApiStatusProvider>
       </LocalizationProvider>
       {/* </ReduxProvider> */}
     </CacheProvider>
